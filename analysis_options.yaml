@@ -1,0 +1,22 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+linter:
+  rules:
+    # Reforça a regra da Clean Architecture: nada em domain/ deve depender de Flutter.
+    # (Enforcement real de import-boundaries fica para uma etapa futura, via
+    # um lint customizado ou CI check dedicado — registrado aqui como lembrete.)
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    avoid_print: true
+    directives_ordering: true
+    sort_child_properties_last: true
+    unawaited_futures: true
