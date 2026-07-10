@@ -22,3 +22,7 @@ const _monthAbbreviations = [
 String formatMonthYear(DateTime date) {
   return '${_monthAbbreviations[date.month - 1]} ${date.year}';
 }
+double? parseAmountInput(String text) {
+  final normalized = text.trim().replaceAll('.', '').replaceAll(',', '.');
+  return double.tryParse(normalized) ?? double.tryParse(text.trim());
+}

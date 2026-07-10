@@ -1,0 +1,313 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../core/extensions/nort_theme_context_x.dart';
+import '../../../../core/utils/formatters.dart';
+import '../../../../shared/components/buttons/nort_text_button.dart';
+import '../../../../shared/components/buttons/primary_button.dart';
+import '../../../../shared/components/common/pressable_scale.dart';
+import '../../../../shared/components/dialogs/bottom_sheet.dart';
+import '../../../../shared/components/dialogs/confirmation_dialog.dart';
+import '../../../../shared/components/inputs/dropdown.dart';
+import '../../../../shared/components/inputs/money_input.dart';
+import '../../../../shared/components/inputs/text_input.dart';
+import '../../domain/entities/category.dart';
+import '../../domain/entities/transaction.dart';
+import '../providers/transactions_providers.dart';
+
+class TransactionFormSheet extends ConsumerStatefulWidget {
+  const TransactionFormSheet({super.key, this.existingTransaction});
+
+  final Transaction? existingTransaction;
+
+  bool get isEditing => existingTransaction != null;
+
+  @override
+  ConsumerState<TransactionFormSheet> createState() => _TransactionFormSheetState();
+}
+
+class _TransactionFormSheetState extends ConsumerState<TransactionFormSheet> {
+  late final TextEditingController _amountController;
+  late final TextEditingController _descriptionController;
+  late TransactionType _type;
+  Category? _category;
+  late DateTime _occurredAt;
+  bool _saving = false;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    final t = widget.existingTransaction;
+    _amountController = TextEditingController(
+      text: t != null ? t.amount.toStringAsFixed(2) : '',
+    );
+    _descriptionController = TextEditingController(text: t?.description ?? '');
+    _type = t?.type ?? TransactionType.expense;
+    _occurredAt = t?.occurredAt ?? DateTime.now();
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickDateTime() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: _occurredAt,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now().add(const Duration(days: 1)),
+    );
+    if (date == null || !mounted) return;
+
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(_occurredAt),
+    );
+    if (time == null) return;
+
+    setState(() {
+      _occurredAt = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    });
+  }
+
+  Future<void> _save() async {
+    final amount = parseAmountInput(_amountController.text);
+    if (amount == null || amount <= 0) {
+      setState(() => _error = 'Informe um valor válido.');
+      return;
+    }
+
+    setState(() {
+      _saving = true;
+      _error = null;
+    });
+
+    final repository = ref.read(transactionsRepositoryProvider);
+    final description = _descriptionController.text.trim();
+
+    try {
+      if (widget.isEditing) {
+        await repository.updateTransaction(
+          id: widget.existingTransaction!.id,
+          amount: amount,
+          type: _type,
+          description: description.isEmpty ? '' : description,
+          categoryId: _category?.id,
+          occurredAt: _occurredAt,
+        );
+      } else {
+        await repository.createTransaction(
+          amount: amount,
+          type: _type,
+          description: description.isEmpty ? null : description,
+          categoryId: _category?.id,
+          occurredAt: _occurredAt,
+        );
+      }
+      if (mounted) Navigator.of(context).pop();
+    } catch (_) {
+      setState(() {
+        _saving = false;
+        _error = 'Não foi possível salvar. Tente de novo.';
+      });
+    }
+  }
+
+  Future<void> _delete() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (_) => const ConfirmationDialog(
+        title: 'Excluir transação?',
+        message: 'Dá pra desfazer logo em seguida, se mudar de ideia.',
+        confirmLabel: 'Excluir',
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    final transactionId = widget.existingTransaction!.id;
+    final repository = ref.read(transactionsRepositoryProvider);
+    await repository.softDeleteTransaction(transactionId);
+
+    if (!mounted) return;
+    Navigator.of(context).pop();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Transação excluída.'),
+        duration: const Duration(seconds: 4),
+        action: SnackBarAction(
+          label: 'Desfazer',
+          onPressed: () => repository.restoreTransaction(transactionId),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final spacing = context.spacing;
+    final radii = context.radii;
+    final categoriesAsync = ref.watch(categoriesProvider);
+
+    return NortBottomSheet(
+      title: widget.isEditing ? 'Editar transação' : 'Nova transação',
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+           Row(
+              children: [
+                Expanded(
+                  child: _TypeToggle(
+                    label: 'Despesa',
+                    selected: _type == TransactionType.expense,
+                    onTap: () => setState(() {
+                      _type = TransactionType.expense;
+                      _category = null;
+                    }),
+                  ),
+                ),
+                SizedBox(width: spacing.sm),
+                Expanded(
+                  child: _TypeToggle(
+                    label: 'Receita',
+                    selected: _type == TransactionType.income,
+                    onTap: () => setState(() {
+                      _type = TransactionType.income;
+                      _category = null;
+                    }),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: spacing.md),
+            Text('Valor', style: context.textStyles.labelLarge),
+            SizedBox(height: spacing.xs),
+            MoneyInput(controller: _amountController, enabled: !_saving),
+            SizedBox(height: spacing.md),
+            NortTextInput(
+              label: 'Descrição (opcional)',
+              placeholder: 'Ex.: Almoço',
+              controller: _descriptionController,
+              enabled: !_saving,
+            ),
+            SizedBox(height: spacing.md),
+            categoriesAsync.when(
+              loading: () => const SizedBox.shrink(),
+              error: (_, __) => const SizedBox.shrink(),
+              data: (categories) {
+                final filtered = categories
+                    .where((c) => c.type == CategoryType.both || c.type.name == _type.name)
+                    .toList();
+                _category ??= filtered.isNotEmpty ? filtered.first : null;
+                return Dropdown<Category>(
+                  label: 'Categoria',
+                  value: _category,
+                  items: filtered,
+                  itemLabel: (c) => c.name,
+                  onChanged: _saving
+                      ? null
+                      : (value) => setState(() => _category = value),
+                );
+              },
+            ),
+            SizedBox(height: spacing.md),
+            PressableScale(
+              onTap: _saving ? null : _pickDateTime,
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.md),
+                decoration: BoxDecoration(
+                  color: colors.surface,
+                  borderRadius: radii.smRadius,
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.schedule_outlined, size: 18, color: colors.textSecondary),
+                    SizedBox(width: spacing.sm),
+                    Text(
+                      _formatDateTime(_occurredAt),
+                      style: context.textStyles.bodyLarge,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            if (_error != null) ...[
+              SizedBox(height: spacing.sm),
+              Text(
+                _error!,
+                style: context.textStyles.bodySmall?.copyWith(color: colors.danger),
+                textAlign: TextAlign.center,
+              ),
+            ],
+            SizedBox(height: spacing.xl),
+            PrimaryButton(
+              label: 'Salvar',
+              loading: _saving,
+              onPressed: _saving ? null : _save,
+            ),
+            if (widget.isEditing) ...[
+              SizedBox(height: spacing.md),
+              Center(
+                child: NortTextButton(
+                  label: 'Excluir transação',
+                  onPressed: _saving ? null : _delete,
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatDateTime(DateTime date) {
+    final day = date.day.toString().padLeft(2, '0');
+    final month = date.month.toString().padLeft(2, '0');
+    final hour = date.hour.toString().padLeft(2, '0');
+    final minute = date.minute.toString().padLeft(2, '0');
+    return '$day/$month/${date.year} às $hour:$minute';
+  }
+}
+
+class _TypeToggle extends StatelessWidget {
+  const _TypeToggle({required this.label, required this.selected, required this.onTap});
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final spacing = context.spacing;
+    final radii = context.radii;
+
+    return PressableScale(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: spacing.sm + 2),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: selected ? colors.brand.disabled : colors.surface,
+          borderRadius: radii.smRadius,
+          border: Border.all(
+            color: selected ? colors.brand.defaultColor : Colors.transparent,
+          ),
+        ),
+        child: Text(
+          label,
+          style: context.textStyles.titleSmall?.copyWith(
+            color: selected ? colors.brand.defaultColor : colors.textPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+}
