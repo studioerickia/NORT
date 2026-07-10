@@ -1,57 +1,91 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/extensions/nort_theme_context_x.dart';
 import '../../../../core/routing/app_routes.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../../shared/components/avatars/user_avatar.dart';
 import '../../../../shared/components/layout/section_and_divider.dart';
+import '../../../../shared/components/loading/loading_state.dart';
 import '../../../../shared/components/navigation/navigation_tile.dart';
 import '../../../../shared/components/navigation/top_app_bar.dart';
+import '../providers/profile_providers.dart';
 
-/// Tela de Perfil — placeholder navegável, empilhada por cima do
-/// Shell (fora da bottom navigation).
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colors = context.colors;
     final spacing = context.spacing;
+    final profileAsync = ref.watch(currentProfileProvider);
 
     return Scaffold(
       backgroundColor: colors.background,
-      appBar: NortTopAppBar(
-        title: 'Perfil',
-        onMenuTap: () => Navigator.of(context).maybePop(),
-      ),
+      appBar: const NortTopAppBar(title: 'Perfil', showBackButton: true),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(spacing.lg),
-          child: ListView(
-            children: [
-              Center(
-                child: Column(
-                  children: [
-                    const UserAvatar(initials: 'EM', size: 72),
-                    SizedBox(height: spacing.md),
-                    Text('Erick Medeiros', style: context.textStyles.titleLarge),
-                  ],
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(
+            spacing.lg,
+            spacing.lg,
+            spacing.lg,
+            spacing.xxxl,
+          ),
+          children: [
+            profileAsync.when(
+              loading: () => const Padding(
+                padding: EdgeInsets.symmetric(vertical: 32),
+                child: LoadingState(),
+              ),
+              error: (error, _) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: Text(
+                  'Não foi possível carregar seu perfil.',
+                  textAlign: TextAlign.center,
+                  style: context.textStyles.bodyMedium,
                 ),
               ),
-              SizedBox(height: spacing.xl),
-              NavigationTile(
-                icon: Icons.settings_outlined,
-                title: 'Configurações',
-                onTap: () => context.push(AppRoutes.settings),
-              ),
-              const NortDivider(),
-              NavigationTile(
-                icon: Icons.help_outline,
-                title: 'Ajuda',
-                onTap: () {},
-              ),
-            ],
-          ),
+              data: (profile) {
+                final name = profile?.displayNameOrFallback ?? 'Você';
+                final email = profile?.email ?? '';
+                final initials = name.isNotEmpty ? name[0].toUpperCase() : '?';
+
+                return Center(
+                  child: Column(
+                    children: [
+                      UserAvatar(initials: initials, size: 72),
+                      SizedBox(height: spacing.md),
+                      Text(name, style: context.textStyles.titleLarge),
+                      SizedBox(height: spacing.xs / 2),
+                      Text(email, style: context.textStyles.bodyMedium),
+                    ],
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: spacing.xxl),
+            NavigationTile(
+              icon: Icons.settings_outlined,
+              title: 'Configurações',
+              onTap: () => context.push(AppRoutes.settings),
+            ),
+            const NortDivider(),
+            NavigationTile(
+              icon: Icons.help_outline,
+              title: 'Ajuda',
+              onTap: () {},
+            ),
+            const NortDivider(),
+            NavigationTile(
+              icon: Icons.logout,
+              title: 'Sair',
+              onTap: () async {
+                await ref.read(authServiceProvider).signOut();
+                if (context.mounted) context.go(AppRoutes.login);
+              },
+            ),
+          ],
         ),
       ),
     );

@@ -6,16 +6,12 @@ import '../../../../core/extensions/nort_theme_context_x.dart';
 import '../../../../core/routing/hero_tags.dart';
 import '../../../../shared/components/chat_bubble/blue_message_bubble.dart';
 import '../../../../shared/components/chat_bubble/suggestion_chip.dart';
+import '../../../../shared/components/chat_bubble/timestamp_and_status.dart';
+import '../../../../shared/components/chat_bubble/typing_indicator.dart';
 import '../../../../shared/components/chat_bubble/user_message_bubble.dart';
 import '../../../../shared/components/inputs/chat_input.dart';
 import '../../../../shared/components/navigation/top_app_bar.dart';
 
-/// Tela de conversa com a Blue — placeholder navegável, com mensagens
-/// mockadas fixas (sem `ChatInput` funcional, sem `blue/domain/brain`
-/// conectado ainda).
-///
-/// A `BlueAvatar` no topo usa a mesma `heroTag` da Home — é isso que
-/// produz a transição Hero ao navegar Home → Chat (ADR seção 8).
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -25,6 +21,18 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
+  bool _hasText = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      final hasText = _controller.text.trim().isNotEmpty;
+      if (hasText != _hasText) {
+        setState(() => _hasText = hasText);
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -41,6 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
       backgroundColor: colors.background,
       appBar: NortTopAppBar(
         title: 'Conversa com a Blue',
+        showBackButton: true,
         trailing: const [
           Padding(
             padding: EdgeInsets.only(right: 8),
@@ -77,6 +86,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     time: '09:41',
                   ),
                   SizedBox(height: spacing.md),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: TypingIndicator(),
+                  ),
+                  SizedBox(height: spacing.md),
                   Wrap(
                     spacing: spacing.sm,
                     children: [
@@ -89,7 +103,12 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(spacing.lg, 0, spacing.lg, spacing.md),
-              child: ChatInput(controller: _controller, hasText: false, onMicTap: () {}),
+              child: ChatInput(
+                controller: _controller,
+                hasText: _hasText,
+                onMicTap: () {},
+                onSend: () {},
+              ),
             ),
           ],
         ),

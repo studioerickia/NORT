@@ -15,8 +15,10 @@ library;
 
 // Animations
 export 'animations/fade_scale_in.dart';
+export 'animations/breathing_scale.dart';
 
 // Avatars
+export 'whale_labs_signature.dart';
 export 'avatars/avatar_stack.dart';
 export 'avatars/user_avatar.dart';
 
@@ -68,6 +70,7 @@ export 'inputs/selection_controls.dart';
 export 'inputs/text_input.dart';
 
 // Layout
+export 'layout/life_os_orbit.dart';
 export 'layout/list_tile.dart';
 export 'layout/section_and_divider.dart';
 export 'layout/statistic_row.dart';

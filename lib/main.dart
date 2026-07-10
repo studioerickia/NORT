@@ -2,26 +2,33 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app.dart';
+import 'core/config/shared_preferences_provider.dart';
+import 'core/config/supabase_config.dart';
 
-/// Entry point do NORT.
-///
-/// `usePathUrlStrategy()` só roda em Flutter Web (`kIsWeb`) — troca as
-/// URLs de `nort.app/#/goals` para `nort.app/goals`, essencial para a
-/// fase atual do projeto (validação de UX em navegador, ver decisão
-/// registrada em `app.dart`/`ResponsiveWebFrame`). Em mobile real,
-/// esta chamada não tem efeito nenhum — é seguro deixá-la incondicional
-/// no código-fonte, sem precisar de `#ifdef` nem build flavors.
-///
-/// `ProviderScope` é o único outro wrapper global permitido aqui —
-/// nenhuma inicialização de serviço (Supabase, Analytics, Feature
-/// Flags etc.) entra neste arquivo. Bootstrapping de serviços
-/// concretos é responsabilidade de `core/services/*` e será conectado
-/// nas etapas seguintes.
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final prefs = await SharedPreferences.getInstance();
+
+  await Supabase.initialize(
+    url: SupabaseConfig.url,
+    anonKey: SupabaseConfig.anonKey,
+  );
+
   if (kIsWeb) {
     usePathUrlStrategy();
   }
-  runApp(const ProviderScope(child: NortApp()));
+
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+      ],
+      child: const NortApp(),
+    ),
+  );
 }

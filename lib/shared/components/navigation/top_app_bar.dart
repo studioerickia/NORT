@@ -3,32 +3,18 @@ import 'package:flutter/material.dart';
 import '../../../core/extensions/nort_theme_context_x.dart';
 import '../buttons/nort_icon_button.dart';
 
-/// Barra superior — logo/título central, ação à esquerda (menu) e
-/// ações à direita (sino + avatar), como nas imagens de referência.
-///
-/// Implementa `PreferredSizeWidget` para poder ser usada diretamente
-/// em `Scaffold.appBar` quando a Navegação (Etapa 5) precisar, mas
-/// não depende de `Scaffold` — pode ser usada solta em qualquer
-/// `Column`.
-///
-/// Exemplo:
-/// ```dart
-/// NortTopAppBar(
-///   title: 'NORT',
-///   onMenuTap: () {},
-///   trailing: [NortIconButton(icon: Icons.notifications_outlined, onPressed: () {})],
-/// )
-/// ```
 class NortTopAppBar extends StatelessWidget implements PreferredSizeWidget {
   const NortTopAppBar({
     super.key,
     this.title,
     this.onMenuTap,
+    this.showBackButton = false,
     this.trailing = const [],
   });
 
   final String? title;
   final VoidCallback? onMenuTap;
+  final bool showBackButton;
   final List<Widget> trailing;
 
   @override
@@ -45,7 +31,12 @@ class NortTopAppBar extends StatelessWidget implements PreferredSizeWidget {
       color: colors.background,
       child: Row(
         children: [
-          if (onMenuTap != null)
+          if (showBackButton)
+            NortIconButton(
+              icon: Icons.arrow_back_ios_new_rounded,
+              onPressed: () => Navigator.of(context).maybePop(),
+            )
+          else if (onMenuTap != null)
             NortIconButton(icon: Icons.menu, onPressed: onMenuTap)
           else
             const SizedBox(width: 40),

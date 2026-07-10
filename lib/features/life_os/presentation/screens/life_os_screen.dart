@@ -4,15 +4,20 @@ import '../../../../blue/presentation/blue_avatar.dart';
 import '../../../../blue/presentation/blue_state.dart';
 import '../../../../core/extensions/nort_theme_context_x.dart';
 import '../../../../shared/components/cards/info_card.dart';
+import '../../../../shared/components/layout/life_os_orbit.dart';
 import '../../../../shared/components/navigation/top_app_bar.dart';
 
-/// Tela de Life OS — placeholder navegável. O componente radial
-/// (`LifeOSOrbit`, ver ADR seção 7) ainda não existe na Component
-/// Library — fica para uma etapa futura, quando `features/life_os`
-/// ganhar lógica; aqui só a `BlueAvatar` central e um `InfoCard`
-/// representam o conceito.
 class LifeOsScreen extends StatelessWidget {
   const LifeOsScreen({super.key});
+
+  static const _areas = [
+    LifeOSAreaItem(icon: Icons.account_balance_wallet_outlined, label: 'Finanças', status: 'Bem'),
+    LifeOSAreaItem(icon: Icons.favorite_border, label: 'Saúde', status: 'Ótimo'),
+    LifeOSAreaItem(icon: Icons.person_outline, label: 'Pessoal', status: 'Bem'),
+    LifeOSAreaItem(icon: Icons.groups_outlined, label: 'Relações', status: 'Bem'),
+    LifeOSAreaItem(icon: Icons.star_outline, label: 'Propósito', status: 'Em foco'),
+    LifeOSAreaItem(icon: Icons.trending_up, label: 'Crescimento', status: 'Evoluindo'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,12 @@ class LifeOsScreen extends StatelessWidget {
       appBar: const NortTopAppBar(title: 'Life OS'),
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.all(spacing.lg),
+          padding: EdgeInsets.fromLTRB(
+            spacing.lg,
+            spacing.md,
+            spacing.lg,
+            spacing.xxxl,
+          ),
           children: [
             Text('Sua vida em equilíbrio', style: context.textStyles.headlineMedium),
             SizedBox(height: spacing.xs),
@@ -33,7 +43,12 @@ class LifeOsScreen extends StatelessWidget {
               style: context.textStyles.bodyMedium,
             ),
             SizedBox(height: spacing.xl),
-            const Center(child: BlueAvatar(state: BlueState.idle, size: 140)),
+            Center(
+              child: LifeOSOrbit(
+                areas: _areas,
+                center: const BlueAvatar(state: BlueState.idle, size: 140),
+              ),
+            ),
             SizedBox(height: spacing.xl),
             InfoCard(
               title: 'Insights da Blue',
