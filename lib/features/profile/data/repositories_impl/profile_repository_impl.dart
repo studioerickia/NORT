@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../domain/entities/user_profile.dart';
@@ -9,6 +11,12 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   final ProfileRemoteDatasource _datasource;
   final SupabaseClient _client;
+
+  String get _requireUserId {
+    final id = _client.auth.currentUser?.id;
+    if (id == null) throw StateError('Nenhum usuário logado.');
+    return id;
+  }
 
   @override
   Future<UserProfile?> getCurrentProfile() async {
@@ -37,5 +45,54 @@ class ProfileRepositoryImpl implements ProfileRepository {
           ? DateTime.parse(row['onboarding_completed_at'] as String)
           : null,
     );
+  }
+
+  @override
+  Future<void> updateDisplayName(String name) async {
+    await _datasource.updateProfileRow(_requireUserId, {'display_name': name});
+  }
+
+  @override
+  Future<String> uploadAvatar({
+    required Uint8List bytes,
+    required String fileExtension,
+  }) async {
+    final userId = _requireUserId;
+    final path = '$userId/avatar.$fileExtension';
+
+    await _client.storage.from('avatars').uploadBinary(
+          path,
+          bytes,
+          fileOptions: FileOptions(
+            upsert: true,
+            contentType: _mimeTypeFor(fileExtension),
+          ),
+        );
+
+    final publicUrl = _client.storage.from('avatars').getPublicUrl(path);
+    final bustedUrl = '$publicUrl?updated=${DateTime.now().millisecondsSinceEpoch}';
+
+    await _datasource.updateProfileRow(userId, {'avatar_url': bustedUrl});
+    return bustedUrl;
+  }
+
+  @override
+  Future<void> completeOnboarding() async {
+    await _datasource.updateProfileRow(_requireUserId, {
+      'onboarding_completed_at': DateTime.now().toIso8601String(),
+    });
+  }
+
+  String _mimeTypeFor(String extension) {
+    switch (extension.toLowerCase()) {
+      case 'png':
+        return 'image/png';
+      case 'webp':
+        return 'image/webp';
+      case 'jpg':
+      case 'jpeg':
+      default:
+        return 'image/jpeg';
+    }
   }
 }

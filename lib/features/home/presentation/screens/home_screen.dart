@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../blue/presentation/blue_avatar.dart';
@@ -16,14 +17,20 @@ import '../../../../shared/components/layout/section_and_divider.dart';
 import '../../../../shared/components/navigation/section_header.dart';
 import '../../../../shared/components/navigation/top_app_bar.dart';
 import '../../../../shared/components/progress/progress_bar.dart';
+import '../../../profile/presentation/providers/profile_providers.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colors = context.colors;
     final spacing = context.spacing;
+
+    final profile = ref.watch(currentProfileProvider).valueOrNull;
+    final firstName = profile?.displayNameOrFallback.split(' ').first ?? '';
+    final greeting = firstName.isNotEmpty ? 'Bom dia, $firstName' : 'Bom dia';
+    final initials = firstName.isNotEmpty ? firstName[0].toUpperCase() : 'EM';
 
     return Scaffold(
       backgroundColor: colors.background,
@@ -35,7 +42,15 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(width: 4),
           GestureDetector(
             onTap: () => context.push(AppRoutes.profile),
-            child: const UserAvatar(initials: 'EM', size: 28),
+            child: profile?.avatarUrl != null
+                ? UserAvatar(
+                    size: 28,
+                    imageBuilder: (context) => Image.network(
+                      profile!.avatarUrl!,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : UserAvatar(initials: initials, size: 28),
           ),
         ],
       ),
@@ -52,7 +67,7 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Bom dia, Erick',
+                    greeting,
                     textAlign: TextAlign.center,
                     style: context.textStyles.headlineMedium,
                   ),

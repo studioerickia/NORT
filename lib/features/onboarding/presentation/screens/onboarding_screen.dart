@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../blue/presentation/blue_avatar.dart';
 import '../../../../blue/presentation/blue_state.dart';
@@ -8,12 +10,13 @@ import '../../../../core/routing/app_routes.dart';
 import '../../../../shared/components/animations/fade_scale_in.dart';
 import '../../../../shared/components/buttons/nort_text_button.dart';
 import '../../../../shared/components/buttons/primary_button.dart';
+import '../../../profile/presentation/providers/profile_providers.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
 class _OnboardingSlide {
@@ -28,9 +31,10 @@ class _OnboardingSlide {
   final BlueState blueState;
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _page = 0;
+  bool _finishing = false;
 
   static const List<_OnboardingSlide> _slides = [
     _OnboardingSlide(
@@ -52,9 +56,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   bool get _isLastPage => _page == _slides.length - 1;
 
+  Future<void> _finishOnboarding() async {
+    if (_finishing) return;
+    setState(() => _finishing = true);
+
+    final isLoggedIn = Supabase.instance.client.auth.currentSession != null;
+
+    if (isLoggedIn) {
+      try {
+        await ref.read(profileRepositoryProvider).completeOnboarding();
+      } catch (_) {}
+      if (mounted) context.go(AppRoutes.home);
+    } else {
+      if (mounted) context.go(AppRoutes.login);
+    }
+  }
+
   void _next() {
     if (_isLastPage) {
-      context.go(AppRoutes.login);
+      _finishOnboarding();
       return;
     }
     _pageController.nextPage(
@@ -98,7 +118,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     opacity: _isLastPage ? 0 : 1,
                     child: NortTextButton(
                       label: 'Pular',
-                      onPressed: _isLastPage ? null : () => context.go(AppRoutes.login),
+                      onPressed: _isLastPage || _finishing ? null : _finishOnboarding,
                     ),
                   ),
                 ),
@@ -143,7 +163,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 padding: EdgeInsets.fromLTRB(spacing.xl, spacing.xl, spacing.xl, spacing.xl),
                 child: PrimaryButton(
                   label: _isLastPage ? 'Começar' : 'Continuar',
-                  onPressed: _next,
+                  loading: _finishing,
+                  onPressed: _finishing ? null : _next,
                 ),
               ),
             ],

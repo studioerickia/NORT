@@ -13,4 +13,8 @@ class ProfileRemoteDatasource {
         .maybeSingle();
     return row;
   }
+
+  Future<void> updateProfileRow(String userId, Map<String, dynamic> changes) async {
+    await _client.from('profiles').update(changes).eq('id', userId);
+  }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../blue/presentation/blue_avatar.dart';
 import '../../../../blue/presentation/blue_state.dart';
@@ -22,15 +21,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 2000), () {
-      if (!mounted) return;
-      final isLoggedIn = Supabase.instance.client.auth.currentSession != null;
-      context.go(isLoggedIn ? AppRoutes.home : AppRoutes.onboarding);
+      if (mounted) context.go(AppRoutes.onboarding);
     });
-  }
-
-  void _goNext() {
-    final isLoggedIn = Supabase.instance.client.auth.currentSession != null;
-    context.go(isLoggedIn ? AppRoutes.home : AppRoutes.onboarding);
   }
 
   @override
@@ -41,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: colors.background,
       body: GestureDetector(
-        onTap: _goNext,
+        onTap: () => context.go(AppRoutes.onboarding),
         behavior: HitTestBehavior.opaque,
         child: Center(
           child: FadeScaleIn(

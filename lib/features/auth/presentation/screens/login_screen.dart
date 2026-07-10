@@ -12,6 +12,7 @@ import '../../../../shared/components/buttons/nort_text_button.dart';
 import '../../../../shared/components/buttons/primary_button.dart';
 import '../../../../shared/components/common/pressable_scale.dart';
 import '../../../../shared/components/inputs/text_input.dart';
+import '../../../profile/presentation/providers/profile_providers.dart';
 import '../providers/auth_providers.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -56,6 +57,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       if (_isSignUp) {
         await authService.signUpWithEmail(email: email, password: password);
+        try {
+          await ref.read(profileRepositoryProvider).completeOnboarding();
+        } catch (_) {}
       } else {
         await authService.signInWithEmail(email: email, password: password);
       }

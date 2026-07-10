@@ -5,11 +5,12 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/extensions/nort_theme_context_x.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/theme_mode_provider.dart';
-import '../../../../shared/components/whale_labs_signature.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../../shared/components/inputs/selection_controls.dart';
 import '../../../../shared/components/layout/section_and_divider.dart';
 import '../../../../shared/components/navigation/navigation_tile.dart';
 import '../../../../shared/components/navigation/top_app_bar.dart';
+import '../../../../shared/components/whale_labs_signature.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -38,8 +39,9 @@ class SettingsScreen extends ConsumerWidget {
               trailing: NortSwitch(
                 value: themeMode == ThemeMode.dark,
                 onChanged: (isDark) {
-                  ref.read(themeModeProvider.notifier).state =
-                      isDark ? ThemeMode.dark : ThemeMode.light;
+                  ref.read(themeModeProvider.notifier).setThemeMode(
+                        isDark ? ThemeMode.dark : ThemeMode.light,
+                      );
                 },
               ),
             ),
@@ -57,9 +59,36 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const NortDivider(),
             NavigationTile(
+              icon: Icons.language_outlined,
+              title: 'Idioma',
+              subtitle: 'Português (Brasil)',
+              onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Em breve — mais idiomas chegando.')),
+              ),
+            ),
+            const NortDivider(),
+            NavigationTile(
+              icon: Icons.attach_money_outlined,
+              title: 'Moeda',
+              subtitle: 'Real (R\$)',
+              onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Em breve — mais moedas chegando.')),
+              ),
+            ),
+            const NortDivider(),
+            NavigationTile(
               icon: Icons.info_outline,
               title: 'Sobre o NORT',
               onTap: () => context.push(AppRoutes.about),
+            ),
+            const NortDivider(),
+            NavigationTile(
+              icon: Icons.logout,
+              title: 'Sair',
+              onTap: () async {
+                await ref.read(authServiceProvider).signOut();
+                if (context.mounted) context.go(AppRoutes.login);
+              },
             ),
             SizedBox(height: spacing.xxxl),
             const Center(
