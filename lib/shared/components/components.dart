@@ -15,6 +15,7 @@ library;
 
 // Animations
 export 'animations/fade_scale_in.dart';
+export 'animations/animated_currency_text.dart';
 export 'animations/breathing_scale.dart';
 
 // Avatars
