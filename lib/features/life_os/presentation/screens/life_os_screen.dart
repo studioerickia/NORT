@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../blue/presentation/blue_avatar.dart';
 import '../../../../blue/presentation/blue_state.dart';
 import '../../../../core/extensions/nort_theme_context_x.dart';
+import '../../../../shared/components/animations/fade_scale_in.dart';
 import '../../../../shared/components/cards/info_card.dart';
 import '../../../../shared/components/layout/life_os_orbit.dart';
 import '../../../../shared/components/navigation/top_app_bar.dart';
@@ -44,17 +45,24 @@ class LifeOsScreen extends StatelessWidget {
             ),
             SizedBox(height: spacing.xl),
             Center(
-              child: LifeOSOrbit(
+             child: LifeOSOrbit(
                 areas: _areas,
-                center: const BlueAvatar(state: BlueState.idle, size: 140),
+                centerSize: 96,
+                center: const BlueAvatar(
+                  state: BlueState.idle,
+                  size: 96,
+                  showGlow: false,
+                ),
               ),
             ),
             SizedBox(height: spacing.xl),
-            InfoCard(
-              title: 'Insights da Blue',
-              description: 'Sua vida está em harmonia.',
-              actionLabel: 'Explorar áreas',
-              onAction: () {},
+            FadeScaleIn(
+              child: InfoCard(
+                title: 'Insights da Blue',
+                description: 'Sua vida está em harmonia.',
+                actionLabel: 'Explorar áreas',
+                onAction: () {},
+              ),
             ),
           ],
         ),

@@ -1,6 +1,6 @@
 enum BlueTone { neutral, celebratory, reassuring, curious, cautious }
 
-enum BlueMood { idle, thinking, celebrating, reassuring }
+enum BlueMood { idle, thinking, celebrating, reassuring, curious, concerned }
 
 class BlueMessage {
   const BlueMessage({

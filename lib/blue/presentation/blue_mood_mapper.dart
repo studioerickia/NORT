@@ -10,6 +10,10 @@ BlueState mapBlueMoodToState(BlueMood mood) {
     case BlueMood.celebrating:
       return BlueState.celebrating;
     case BlueMood.reassuring:
-      return BlueState.idle;
+      return BlueState.reassuring;
+    case BlueMood.curious:
+      return BlueState.curious;
+    case BlueMood.concerned:
+      return BlueState.concerned;
   }
 }
