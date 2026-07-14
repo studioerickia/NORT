@@ -1,3 +1,6 @@
+@Skip('Pré-Sprint 1 — assume fluxo de login sem Supabase real. Precisa de infraestrutura de mock de auth antes de reativar.')
+library;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

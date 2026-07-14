@@ -4,9 +4,21 @@ import 'package:nort/blue/presentation/blue_avatar.dart';
 import 'package:nort/blue/presentation/blue_state.dart';
 import 'package:nort/core/theme/nort_theme.dart';
 
-Widget _wrap(Widget child, {Brightness brightness = Brightness.light}) {
+Widget _wrap(
+  Widget child, {
+  Brightness brightness = Brightness.light,
+  bool? disableAnimations,
+}) {
   return MaterialApp(
     theme: brightness == Brightness.light ? NortTheme.light : NortTheme.dark,
+    builder: disableAnimations == null
+        ? null
+        : (context, materialChild) {
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(disableAnimations: disableAnimations),
+              child: materialChild!,
+            );
+          },
     home: Scaffold(body: Center(child: child)),
   );
 }
@@ -85,12 +97,7 @@ void main() {
     });
 
     testWidgets('respeita MediaQuery.disableAnimations (reduzir movimento do SO)', (tester) async {
-      await tester.pumpWidget(
-        MediaQuery(
-          data: const MediaQueryData(disableAnimations: true),
-          child: _wrap(const BlueAvatar()),
-        ),
-      );
+      await tester.pumpWidget(_wrap(const BlueAvatar(), disableAnimations: true));
       await tester.pump();
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);

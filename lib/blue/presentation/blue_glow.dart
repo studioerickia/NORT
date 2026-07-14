@@ -2,23 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../core/extensions/nort_theme_context_x.dart';
 
-/// Halo radial "oceano" atrás da Blue — único uso de gradiente
-/// permitido no sistema (ver ADR seção 5 e `NortColors.oceanGradientStart/End`).
-///
-/// Placeholder desta etapa: gradiente estático com uma pulsação
-/// muito sutil de escala. Quando Lottie/Rive entrarem (ver ADR seção
-/// 9), este widget continua existindo como o "fundo" atrás da
-/// animação real — a API não muda.
-///
-/// Exemplo:
-/// ```dart
-/// BlueGlow(size: 200, child: BlueAvatar(state: BlueState.idle))
-/// ```
 class BlueGlow extends StatefulWidget {
-  const BlueGlow({super.key, required this.size, this.child});
+  const BlueGlow({super.key, required this.size, this.child, this.animate = true});
 
   final double size;
   final Widget? child;
+  final bool animate;
 
   @override
   State<BlueGlow> createState() => _BlueGlowState();
@@ -34,7 +23,30 @@ class _BlueGlowState extends State<BlueGlow>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
-    )..repeat(reverse: true);
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _syncAnimating();
+  }
+
+  @override
+  void didUpdateWidget(covariant BlueGlow oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _syncAnimating();
+  }
+
+  void _syncAnimating() {
+    final reduceMotion = MediaQuery.of(context).disableAnimations;
+    final shouldAnimate = widget.animate && !reduceMotion;
+
+    if (shouldAnimate && !_controller.isAnimating) {
+      _controller.repeat(reverse: true);
+    } else if (!shouldAnimate && _controller.isAnimating) {
+      _controller.stop();
+    }
   }
 
   @override

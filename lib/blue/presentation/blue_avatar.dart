@@ -32,8 +32,8 @@ class BlueAvatar extends StatelessWidget {
       showGlow: showGlow,
     );
 
-    if (showGlow) {
-      avatar = BlueGlow(size: size * 1.35, child: avatar);
+  if (showGlow) {
+      avatar = BlueGlow(size: size * 1.35, animate: animate, child: avatar);
     }
 
     if (heroTag != null) {
