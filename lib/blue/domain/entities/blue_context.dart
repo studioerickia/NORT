@@ -27,8 +27,9 @@ class BlueContext {
     this.onboardingJustCompleted = false,
     this.goalJustCompletedTitle,
     this.goalJustCreatedTitle,
-    this.manyExpensesThisMonth = false,
+   this.manyExpensesThisMonth = false,
     this.significantBehaviorChangeDetected = false,
+    this.transactionCountThisMonth = 0,
   });
 
   final DateTime now;
@@ -53,4 +54,6 @@ class BlueContext {
 
   final bool manyExpensesThisMonth;
   final bool significantBehaviorChangeDetected;
+
+  final int transactionCountThisMonth;
 }

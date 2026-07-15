@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../blue/domain/entities/blue_message.dart';
+import '../../../../blue/domain/brain/blue_decision_engine.dart';
 import '../../../../blue/domain/personality/blue_rules_engine.dart';
 import '../../../../blue/presentation/blue_avatar.dart';
-import '../../../../blue/presentation/blue_mood_mapper.dart';
 import '../../../../blue/presentation/blue_state.dart';
+import '../../../../blue/presentation/providers/blue_decision_engine_provider.dart';
 import '../../../../blue/presentation/providers/blue_providers.dart';
+import '../../../../blue/presentation/widgets/blue_insight_card.dart';
 import '../../../../core/extensions/nort_theme_context_x.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/routing/hero_tags.dart';
@@ -32,6 +33,7 @@ import '../../../profile/presentation/providers/profile_providers.dart';
 import '../../../transactions/domain/entities/transaction.dart';
 import '../../../transactions/presentation/providers/transactions_providers.dart';
 import '../../../transactions/presentation/widgets/transaction_list_tile_skeleton.dart';
+import '../blue_context_builder.dart';
 import '../providers/home_period_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -42,13 +44,14 @@ class HomeScreen extends ConsumerWidget {
     final colors = context.colors;
     final spacing = context.spacing;
 
-    final blueEngine = ref.watch(blueRulesEngineProvider);
+    final blueRulesEngine = ref.watch(blueRulesEngineProvider);
+    final blueDecisionEngine = ref.watch(blueDecisionEngineProvider);
 
     final profile = ref.watch(currentProfileProvider).valueOrNull;
     final firstName = profile?.displayNameOrFallback.split(' ').first ?? '';
     final initials = firstName.isNotEmpty ? firstName[0].toUpperCase() : 'EM';
 
-    final blueGreeting = blueEngine.greeting(
+    final blueGreeting = blueRulesEngine.greeting(
       now: DateTime.now(),
       firstName: firstName.isNotEmpty ? firstName : null,
     );
@@ -162,15 +165,18 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
             ] else ...[
-              _buildBalanceCard(
+              _buildBalanceCard(context, goalsAsync.value!, transactionsAsync.value!, period),
+              SizedBox(height: spacing.md),
+              _buildInsightSection(
                 context,
-                blueEngine,
+                blueDecisionEngine,
                 goalsAsync.value!,
                 transactionsAsync.value!,
                 period,
+                firstName,
               ),
               SizedBox(height: spacing.xxl),
-              _buildGoalSection(context, blueEngine, goalsAsync.value!),
+              _buildGoalSection(context, blueRulesEngine, goalsAsync.value!),
               SizedBox(height: spacing.xxl),
               _buildTransactionsSection(context, transactionsAsync.value!),
             ],
@@ -180,9 +186,44 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
+  Widget _buildInsightSection(
+    BuildContext context,
+    BlueDecisionEngine blueDecisionEngine,
+    List<Goal> goals,
+    List<Transaction> transactions,
+    PeriodSelection period,
+    String firstName,
+  ) {
+    try {
+      double balance = 0;
+      for (final t in transactions) {
+        balance += t.type == TransactionType.income ? t.amount : -t.amount;
+      }
+
+      final blueContext = buildHomeBlueContext(
+        now: DateTime.now(),
+        firstName: firstName.isNotEmpty ? firstName : null,
+        balance: balance,
+        goals: goals,
+        transactions: transactions,
+        period: period,
+      );
+
+      final decision = blueDecisionEngine.decide(blueContext);
+
+      if (!decision.shouldDisplay) return const SizedBox.shrink();
+
+      return FadeScaleIn(
+        delay: const Duration(milliseconds: 110),
+        child: BlueInsightCard(decision: decision),
+      );
+    } catch (_) {
+      return const SizedBox.shrink();
+    }
+  }
+
   Widget _buildBalanceCard(
     BuildContext context,
-    BlueRulesEngine blueEngine,
     List<Goal> goals,
     List<Transaction> transactions,
     PeriodSelection period,
@@ -200,7 +241,6 @@ class HomeScreen extends ConsumerWidget {
       }
     }
     final balance = totalIncome - totalExpense;
-    final balanceMessage = blueEngine.balanceObservation(balance: balance);
 
     double periodIncome = 0;
     double periodExpense = 0;
@@ -231,10 +271,6 @@ class HomeScreen extends ConsumerWidget {
             Text('Saldo disponível', style: context.textStyles.bodyMedium),
             SizedBox(height: spacing.xs),
             AnimatedCurrencyText(value: balance, style: context.numericStyles.large),
-            if (balanceMessage.shouldDisplay) ...[
-              SizedBox(height: spacing.sm),
-              _BlueObservation(text: balanceMessage.text, mood: balanceMessage.suggestedMood),
-            ],
             SizedBox(height: spacing.lg),
             Divider(height: 1, color: colors.border),
             SizedBox(height: spacing.md),
@@ -283,8 +319,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildGoalSection(BuildContext context, BlueRulesEngine blueEngine, List<Goal> goals) {
-    final spacing = context.spacing;
+  Widget _buildGoalSection(BuildContext context, BlueRulesEngine blueRulesEngine, List<Goal> goals) {
     final activeGoals = goals.where((g) => g.status == GoalStatus.active).toList();
     final hasActiveGoal = activeGoals.isNotEmpty;
 
@@ -299,48 +334,26 @@ class HomeScreen extends ConsumerWidget {
         switchInCurve: context.motion.enter,
         switchOutCurve: context.motion.exit,
         child: hasActiveGoal
-            ? Builder(
+            ? FadeScaleIn(
                 key: ValueKey('goal-${activeGoals.first.id}'),
-                builder: (context) {
-                  final goal = activeGoals.first;
-                  final remaining = (goal.targetAmount - goal.currentAmount).clamp(0, double.infinity);
-                  final observation = blueEngine.goalObservation(
-                    progress: goal.progress,
-                    remainingAmount: remaining.toDouble(),
-                    isCompleted: false,
-                    goalTitle: goal.title,
-                  );
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      FadeScaleIn(
-                        delay: const Duration(milliseconds: 140),
-                        child: GoalCard(
-                          title: goal.title,
-                          currentAmountLabel: formatCurrencyBRL(goal.currentAmount),
-                          targetAmountLabel: formatCurrencyBRL(goal.targetAmount),
-                          progress: goal.progress,
-                          dateLabel: goal.targetDate != null
-                              ? 'Conclusão: ${formatMonthYear(goal.targetDate!)}'
-                              : 'Sem data definida',
-                          imageBuilder: goal.imageUrl != null
-                              ? (context) => Image.network(goal.imageUrl!, fit: BoxFit.cover)
-                              : null,
-                          onTap: () => context.go(AppRoutes.goals),
-                        ),
-                      ),
-                      if (observation.shouldDisplay) ...[
-                        SizedBox(height: spacing.sm),
-                        _BlueObservation(text: observation.text, mood: observation.suggestedMood),
-                      ],
-                    ],
-                  );
-                },
+                delay: const Duration(milliseconds: 140),
+                child: GoalCard(
+                  title: activeGoals.first.title,
+                  currentAmountLabel: formatCurrencyBRL(activeGoals.first.currentAmount),
+                  targetAmountLabel: formatCurrencyBRL(activeGoals.first.targetAmount),
+                  progress: activeGoals.first.progress,
+                  dateLabel: activeGoals.first.targetDate != null
+                      ? 'Conclusão: ${formatMonthYear(activeGoals.first.targetDate!)}'
+                      : 'Sem data definida',
+                  imageBuilder: activeGoals.first.imageUrl != null
+                      ? (context) => Image.network(activeGoals.first.imageUrl!, fit: BoxFit.cover)
+                      : null,
+                  onTap: () => context.go(AppRoutes.goals),
+                ),
               )
             : _GoalsEmptyState(
                 key: const ValueKey('goals-empty'),
-                title: blueEngine.emptyStateMessage(BlueEmptyStateKind.noActiveGoals).text,
+                title: blueRulesEngine.emptyStateMessage(BlueEmptyStateKind.noActiveGoals).text,
                 onCreateTap: () => context.go(AppRoutes.goals),
               ),
       ),
@@ -437,37 +450,6 @@ class _GoalsEmptyState extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _BlueObservation extends StatelessWidget {
-  const _BlueObservation({required this.text, required this.mood});
-
-  final String text;
-  final BlueMood mood;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final spacing = context.spacing;
-
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: spacing.xs),
-      child: Row(
-        children: [
-          BreathingScale(
-            child: BlueAvatar(state: mapBlueMoodToState(mood), size: 18, showGlow: false),
-          ),
-          SizedBox(width: spacing.xs),
-          Expanded(
-            child: Text(
-              text,
-              style: context.textStyles.bodySmall?.copyWith(color: colors.textSecondary),
-            ),
-          ),
-        ],
       ),
     );
   }
