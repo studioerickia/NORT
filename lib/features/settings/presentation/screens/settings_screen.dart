@@ -63,7 +63,8 @@ class SettingsScreen extends ConsumerWidget {
               title: 'Idioma',
               subtitle: 'Português (Brasil)',
               onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Em breve — mais idiomas chegando.')),
+                const SnackBar(
+                    content: Text('Em breve — mais idiomas chegando.')),
               ),
             ),
             const NortDivider(),
@@ -72,7 +73,8 @@ class SettingsScreen extends ConsumerWidget {
               title: 'Moeda',
               subtitle: 'Real (R\$)',
               onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Em breve — mais moedas chegando.')),
+                const SnackBar(
+                    content: Text('Em breve — mais moedas chegando.')),
               ),
             ),
             const NortDivider(),

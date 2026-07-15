@@ -63,7 +63,9 @@ class TransactionsRepositoryImpl implements TransactionsRepository {
     if (type != null) changes['type'] = type.name;
     if (description != null) changes['description'] = description;
     if (categoryId != null) changes['category_id'] = categoryId;
-    if (occurredAt != null) changes['occurred_at'] = occurredAt.toIso8601String();
+    if (occurredAt != null) {
+      changes['occurred_at'] = occurredAt.toIso8601String();
+    }
 
     if (changes.isEmpty) return;
     await _datasource.updateTransaction(id, changes);

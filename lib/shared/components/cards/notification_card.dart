@@ -46,8 +46,11 @@ class NotificationCard extends StatelessWidget {
     return PressableScale(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: spacing.md, horizontal: spacing.lg),
-        color: unread ? colors.positiveSurface.withOpacity(0.4) : Colors.transparent,
+        padding:
+            EdgeInsets.symmetric(vertical: spacing.md, horizontal: spacing.lg),
+        color: unread
+            ? colors.positiveSurface.withOpacity(0.4)
+            : Colors.transparent,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

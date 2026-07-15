@@ -38,9 +38,8 @@ class PrimaryButton extends StatelessWidget {
     final spacing = context.spacing;
     final radii = context.radii;
 
-    final background = _enabled
-        ? colors.brand.defaultColor
-        : colors.brand.disabled;
+    final background =
+        _enabled ? colors.brand.defaultColor : colors.brand.disabled;
 
     return PressableScale(
       enabled: _enabled,

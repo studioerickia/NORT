@@ -13,30 +13,36 @@ BlueContext buildHomeBlueContext({
   required List<Transaction> transactions,
   required PeriodSelection period,
 }) {
-  final activeGoals = goals.where((g) => g.status == GoalStatus.active).toList();
+  final activeGoals =
+      goals.where((g) => g.status == GoalStatus.active).toList();
 
   final mostRecentGoal = activeGoals.isEmpty
       ? null
       : BlueGoalSnapshot(
           title: activeGoals.first.title,
           progress: activeGoals.first.progress,
-          remainingAmount: (activeGoals.first.targetAmount - activeGoals.first.currentAmount)
-              .clamp(0, double.infinity)
-              .toDouble(),
+          remainingAmount:
+              (activeGoals.first.targetAmount - activeGoals.first.currentAmount)
+                  .clamp(0, double.infinity)
+                  .toDouble(),
         );
 
-  final periodTransactions = transactions.where((t) => period.contains(t.occurredAt, now: now)).toList();
+  final periodTransactions = transactions
+      .where((t) => period.contains(t.occurredAt, now: now))
+      .toList();
   final periodExpenseCount =
       periodTransactions.where((t) => t.type == TransactionType.expense).length;
 
   DateTime? mostRecentTransactionAt;
   for (final t in transactions) {
-    if (mostRecentTransactionAt == null || t.occurredAt.isAfter(mostRecentTransactionAt)) {
+    if (mostRecentTransactionAt == null ||
+        t.occurredAt.isAfter(mostRecentTransactionAt)) {
       mostRecentTransactionAt = t.occurredAt;
     }
   }
-  final daysSinceLastTransaction =
-      mostRecentTransactionAt != null ? now.difference(mostRecentTransactionAt).inDays : null;
+  final daysSinceLastTransaction = mostRecentTransactionAt != null
+      ? now.difference(mostRecentTransactionAt).inDays
+      : null;
 
   return BlueContext(
     now: now,

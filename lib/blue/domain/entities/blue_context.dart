@@ -27,7 +27,7 @@ class BlueContext {
     this.onboardingJustCompleted = false,
     this.goalJustCompletedTitle,
     this.goalJustCreatedTitle,
-   this.manyExpensesThisMonth = false,
+    this.manyExpensesThisMonth = false,
     this.significantBehaviorChangeDetected = false,
     this.transactionCountThisMonth = 0,
   });

@@ -50,7 +50,8 @@ class DeterministicBlueRulesEngine implements BlueRulesEngine {
     String? goalTitle,
   }) {
     if (isCompleted) {
-      final title = (goalTitle != null && goalTitle.isNotEmpty) ? ' "$goalTitle"' : '';
+      final title =
+          (goalTitle != null && goalTitle.isNotEmpty) ? ' "$goalTitle"' : '';
       return BlueMessage(
         text: 'Você concluiu a meta$title. Isso é resultado de constância.',
         tone: BlueTone.celebratory,
@@ -93,7 +94,8 @@ class DeterministicBlueRulesEngine implements BlueRulesEngine {
   BlueMessage balanceObservation({required double balance}) {
     if (balance < 0) {
       return const BlueMessage(
-        text: 'Seu saldo está negativo esse mês. Sem alarme — quando quiser, a gente organiza isso com calma.',
+        text:
+            'Seu saldo está negativo esse mês. Sem alarme — quando quiser, a gente organiza isso com calma.',
         tone: BlueTone.reassuring,
         ruleId: 'balance.negative',
         suggestedMood: BlueMood.reassuring,

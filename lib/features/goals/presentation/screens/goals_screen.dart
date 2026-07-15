@@ -18,7 +18,11 @@ import '../widgets/goal_form_sheet.dart';
 import '../widgets/trash_sheet.dart';
 import '../../../../shared/tokens/spacing/nort_spacing.dart';
 
-const _tabStatuses = [GoalStatus.active, GoalStatus.completed, GoalStatus.archived];
+const _tabStatuses = [
+  GoalStatus.active,
+  GoalStatus.completed,
+  GoalStatus.archived
+];
 const _tabLabels = ['Ativas', 'Concluídas', 'Sonhos'];
 
 class GoalsScreen extends ConsumerStatefulWidget {
@@ -112,7 +116,8 @@ class _GoalsScreenState extends ConsumerState<GoalsScreen> {
                 ),
               ),
               data: (allGoals) {
-                final goals = allGoals.where((g) => g.status == currentStatus).toList();
+                final goals =
+                    allGoals.where((g) => g.status == currentStatus).toList();
                 return _buildTabContent(context, goals, currentStatus, spacing);
               },
             ),
@@ -146,7 +151,8 @@ class _GoalsScreenState extends ConsumerState<GoalsScreen> {
                   ? 'Conclusão: ${formatMonthYear(goals[i].targetDate!)}'
                   : 'Sem data definida',
               imageBuilder: goals[i].imageUrl != null
-                  ? (context) => Image.network(goals[i].imageUrl!, fit: BoxFit.cover)
+                  ? (context) =>
+                      Image.network(goals[i].imageUrl!, fit: BoxFit.cover)
                   : null,
               onTap: () => _openDetail(goals[i]),
             ),

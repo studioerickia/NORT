@@ -47,7 +47,8 @@ class DeterministicDecisionEngine implements BlueDecisionEngine {
       tone: BlueTone.celebratory,
       mood: BlueMood.celebrating,
       ruleId: 'decision.goal_completed',
-      text: 'Você concluiu a meta "${c.goalJustCompletedTitle}". Isso é resultado de constância.',
+      text:
+          'Você concluiu a meta "${c.goalJustCompletedTitle}". Isso é resultado de constância.',
     );
   }
 
@@ -60,13 +61,16 @@ class DeterministicDecisionEngine implements BlueDecisionEngine {
       tone: BlueTone.reassuring,
       mood: BlueMood.reassuring,
       ruleId: 'decision.negative_balance',
-      text: 'Seu saldo está negativo esse mês. Sem alarme — quando quiser, a gente organiza isso com calma.',
+      text:
+          'Seu saldo está negativo esse mês. Sem alarme — quando quiser, a gente organiza isso com calma.',
     );
   }
 
   BlueDecision? _goalNearCompletion(BlueContext c) {
     final goal = c.mostRecentActiveGoal;
-    if (goal == null || goal.progress < 0.8 || goal.progress >= 1.0) return null;
+    if (goal == null || goal.progress < 0.8 || goal.progress >= 1.0) {
+      return null;
+    }
     return _build(
       trigger: BlueTrigger.goalNearCompletion,
       type: BlueDecisionType.goal,
@@ -74,7 +78,8 @@ class DeterministicDecisionEngine implements BlueDecisionEngine {
       tone: BlueTone.reassuring,
       mood: BlueMood.idle,
       ruleId: 'decision.goal_near_completion',
-      text: 'Faltam apenas ${formatCurrencyBRL(goal.remainingAmount)} pra "${goal.title}".',
+      text:
+          'Faltam apenas ${formatCurrencyBRL(goal.remainingAmount)} pra "${goal.title}".',
     );
   }
 
@@ -101,7 +106,8 @@ class DeterministicDecisionEngine implements BlueDecisionEngine {
       tone: BlueTone.reassuring,
       mood: BlueMood.idle,
       ruleId: 'decision.returned_after_absence',
-      text: 'Que bom te ver de novo. Nada acumulou de errado — só o de sempre esperando você.',
+      text:
+          'Que bom te ver de novo. Nada acumulou de errado — só o de sempre esperando você.',
     );
   }
 
@@ -127,7 +133,8 @@ class DeterministicDecisionEngine implements BlueDecisionEngine {
       tone: BlueTone.curious,
       mood: BlueMood.curious,
       ruleId: 'decision.behavior_change',
-      text: 'Percebi uma mudança no seu padrão esse mês. Só quis registrar — sem nenhum julgamento nisso.',
+      text:
+          'Percebi uma mudança no seu padrão esse mês. Só quis registrar — sem nenhum julgamento nisso.',
     );
   }
 
@@ -140,7 +147,8 @@ class DeterministicDecisionEngine implements BlueDecisionEngine {
       tone: BlueTone.neutral,
       mood: BlueMood.idle,
       ruleId: 'decision.many_expenses',
-      text: 'Notei bastante movimento nas despesas esse mês. Sem problema — só quis te avisar.',
+      text:
+          'Notei bastante movimento nas despesas esse mês. Sem problema — só quis te avisar.',
     );
   }
 
@@ -166,7 +174,8 @@ class DeterministicDecisionEngine implements BlueDecisionEngine {
       tone: BlueTone.curious,
       mood: BlueMood.curious,
       ruleId: 'decision.goal_created',
-      text: 'Vi que você criou "${c.goalJustCreatedTitle}". Vou acompanhar isso com você.',
+      text:
+          'Vi que você criou "${c.goalJustCreatedTitle}". Vou acompanhar isso com você.',
     );
   }
 
@@ -205,7 +214,8 @@ class DeterministicDecisionEngine implements BlueDecisionEngine {
       tone: BlueTone.neutral,
       mood: BlueMood.idle,
       ruleId: 'decision.first_expense',
-      text: 'Primeira despesa registrada. Assim você começa a enxergar seu padrão.',
+      text:
+          'Primeira despesa registrada. Assim você começa a enxergar seu padrão.',
     );
   }
 
@@ -219,7 +229,8 @@ class DeterministicDecisionEngine implements BlueDecisionEngine {
       tone: BlueTone.reassuring,
       mood: BlueMood.idle,
       ruleId: 'decision.no_transactions',
-      text: 'Faz um tempo que não aparece nenhuma transação por aqui. Sem pressa — só passando.',
+      text:
+          'Faz um tempo que não aparece nenhuma transação por aqui. Sem pressa — só passando.',
     );
   }
 

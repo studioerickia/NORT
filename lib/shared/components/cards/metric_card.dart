@@ -41,7 +41,8 @@ class MetricCard extends StatelessWidget {
     final colors = context.colors;
     final spacing = context.spacing;
 
-    final deltaColor = deltaPositive ? colors.positive.defaultColor : colors.warning;
+    final deltaColor =
+        deltaPositive ? colors.positive.defaultColor : colors.warning;
 
     return BaseCard(
       child: Column(

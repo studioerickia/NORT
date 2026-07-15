@@ -44,7 +44,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     ),
     _OnboardingSlide(
       title: 'Você não está\nsozinho nessa',
-      subtitle: 'A Blue caminha ao seu lado — pra conversar,\nentender e cuidar do que importa.',
+      subtitle:
+          'A Blue caminha ao seu lado — pra conversar,\nentender e cuidar do que importa.',
       blueState: BlueState.idle,
     ),
     _OnboardingSlide(
@@ -118,7 +119,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     opacity: _isLastPage ? 0 : 1,
                     child: NortTextButton(
                       label: 'Pular',
-                      onPressed: _isLastPage || _finishing ? null : _finishOnboarding,
+                      onPressed:
+                          _isLastPage || _finishing ? null : _finishOnboarding,
                     ),
                   ),
                 ),
@@ -160,7 +162,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ),
               _PageDots(count: _slides.length, current: _page),
               Padding(
-                padding: EdgeInsets.fromLTRB(spacing.xl, spacing.xl, spacing.xl, spacing.xl),
+                padding: EdgeInsets.fromLTRB(
+                    spacing.xl, spacing.xl, spacing.xl, spacing.xl),
                 child: PrimaryButton(
                   label: _isLastPage ? 'Começar' : 'Continuar',
                   loading: _finishing,

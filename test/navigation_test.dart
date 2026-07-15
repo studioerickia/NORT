@@ -1,4 +1,5 @@
-@Skip('Pré-Sprint 1 — assume fluxo de login sem Supabase real. Precisa de infraestrutura de mock de auth antes de reativar.')
+@Skip(
+    'Pré-Sprint 1 — assume fluxo de login sem Supabase real. Precisa de infraestrutura de mock de auth antes de reativar.')
 library;
 
 import 'package:flutter/material.dart';
@@ -107,6 +108,7 @@ void main() {
     final navBar = tester.widget<NortBottomNavBar>(
       find.byType(NortBottomNavBar),
     );
-    expect(navBar.currentIndex, 2); // Início(0) Transações(1) Metas(2) LifeOS(3)
+    expect(
+        navBar.currentIndex, 2); // Início(0) Transações(1) Metas(2) LifeOS(3)
   });
 }

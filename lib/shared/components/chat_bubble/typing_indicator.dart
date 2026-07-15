@@ -43,7 +43,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
     final radii = context.radii;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm + 2),
+      padding: EdgeInsets.symmetric(
+          horizontal: spacing.md, vertical: spacing.sm + 2),
       decoration: BoxDecoration(
         color: colors.chatBubbleBlue,
         borderRadius: radii.lgRadius,

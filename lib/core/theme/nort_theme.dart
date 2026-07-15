@@ -18,16 +18,16 @@ import '../../shared/tokens/tokens.dart';
 ///    Component Library.
 abstract final class NortTheme {
   static ThemeData get light => _build(
-    brightness: Brightness.light,
-    colors: NortColors.light(),
-    shadows: NortShadows.light(),
-  );
+        brightness: Brightness.light,
+        colors: NortColors.light(),
+        shadows: NortShadows.light(),
+      );
 
   static ThemeData get dark => _build(
-    brightness: Brightness.dark,
-    colors: NortColors.dark(),
-    shadows: NortShadows.dark(),
-  );
+        brightness: Brightness.dark,
+        colors: NortColors.dark(),
+        shadows: NortShadows.dark(),
+      );
 
   static ThemeData _build({
     required Brightness brightness,

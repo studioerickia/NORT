@@ -10,7 +10,8 @@ Future<String?> authRedirect(BuildContext context, GoRouterState state) async {
   final location = state.matchedLocation;
 
   if (!isLoggedIn) {
-    final isAllowedLoggedOut = location == AppRoutes.onboarding || location == AppRoutes.login;
+    final isAllowedLoggedOut =
+        location == AppRoutes.onboarding || location == AppRoutes.login;
     return isAllowedLoggedOut ? null : AppRoutes.login;
   }
 

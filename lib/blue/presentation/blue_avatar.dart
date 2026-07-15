@@ -32,7 +32,7 @@ class BlueAvatar extends StatelessWidget {
       showGlow: showGlow,
     );
 
-  if (showGlow) {
+    if (showGlow) {
       avatar = BlueGlow(size: size * 1.35, animate: animate, child: avatar);
     }
 
@@ -97,7 +97,8 @@ class _BlueIllustrationState extends State<_BlueIllustration>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: _durationFor(widget.state));
+    _controller =
+        AnimationController(vsync: this, duration: _durationFor(widget.state));
   }
 
   @override

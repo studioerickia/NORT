@@ -12,12 +12,19 @@ class LifeOsScreen extends StatelessWidget {
   const LifeOsScreen({super.key});
 
   static const _areas = [
-    LifeOSAreaItem(icon: Icons.account_balance_wallet_outlined, label: 'Finanças', status: 'Bem'),
-    LifeOSAreaItem(icon: Icons.favorite_border, label: 'Saúde', status: 'Ótimo'),
+    LifeOSAreaItem(
+        icon: Icons.account_balance_wallet_outlined,
+        label: 'Finanças',
+        status: 'Bem'),
+    LifeOSAreaItem(
+        icon: Icons.favorite_border, label: 'Saúde', status: 'Ótimo'),
     LifeOSAreaItem(icon: Icons.person_outline, label: 'Pessoal', status: 'Bem'),
-    LifeOSAreaItem(icon: Icons.groups_outlined, label: 'Relações', status: 'Bem'),
-    LifeOSAreaItem(icon: Icons.star_outline, label: 'Propósito', status: 'Em foco'),
-    LifeOSAreaItem(icon: Icons.trending_up, label: 'Crescimento', status: 'Evoluindo'),
+    LifeOSAreaItem(
+        icon: Icons.groups_outlined, label: 'Relações', status: 'Bem'),
+    LifeOSAreaItem(
+        icon: Icons.star_outline, label: 'Propósito', status: 'Em foco'),
+    LifeOSAreaItem(
+        icon: Icons.trending_up, label: 'Crescimento', status: 'Evoluindo'),
   ];
 
   @override
@@ -37,7 +44,8 @@ class LifeOsScreen extends StatelessWidget {
             spacing.xxxl,
           ),
           children: [
-            Text('Sua vida em equilíbrio', style: context.textStyles.headlineMedium),
+            Text('Sua vida em equilíbrio',
+                style: context.textStyles.headlineMedium),
             SizedBox(height: spacing.xs),
             Text(
               'Acompanhe todas as áreas que importam para você.',
@@ -45,7 +53,7 @@ class LifeOsScreen extends StatelessWidget {
             ),
             SizedBox(height: spacing.xl),
             Center(
-             child: LifeOSOrbit(
+              child: LifeOSOrbit(
                 areas: _areas,
                 centerSize: 96,
                 center: const BlueAvatar(

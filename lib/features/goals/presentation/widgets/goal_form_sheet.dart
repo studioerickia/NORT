@@ -81,14 +81,16 @@ class _GoalFormSheetState extends ConsumerState<GoalFormSheet> {
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
-    final file = await picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
+    final file =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
     if (file == null) return;
 
     final extension = file.name.split('.').last.toLowerCase();
     if (!_allowedImageExtensions.contains(extension)) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Formato não suportado — use JPG, PNG ou WEBP.')),
+          const SnackBar(
+              content: Text('Formato não suportado — use JPG, PNG ou WEBP.')),
         );
       }
       return;
@@ -98,7 +100,8 @@ class _GoalFormSheetState extends ConsumerState<GoalFormSheet> {
     if (bytes.lengthInBytes > _maxImageBytes) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Imagem muito grande — o limite é 5MB.')),
+          const SnackBar(
+              content: Text('Imagem muito grande — o limite é 5MB.')),
         );
       }
       return;
@@ -233,21 +236,25 @@ class _GoalFormSheetState extends ConsumerState<GoalFormSheet> {
               onTap: _saving ? null : _pickDate,
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.md),
+                padding: EdgeInsets.symmetric(
+                    horizontal: spacing.md, vertical: spacing.md),
                 decoration: BoxDecoration(
                   color: colors.surface,
                   borderRadius: radii.smRadius,
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.calendar_today_outlined, size: 18, color: colors.textSecondary),
+                    Icon(Icons.calendar_today_outlined,
+                        size: 18, color: colors.textSecondary),
                     SizedBox(width: spacing.sm),
                     Text(
                       _targetDate != null
                           ? '${_targetDate!.day.toString().padLeft(2, '0')}/${_targetDate!.month.toString().padLeft(2, '0')}/${_targetDate!.year}'
                           : 'Data alvo (opcional)',
                       style: context.textStyles.bodyLarge?.copyWith(
-                        color: _targetDate != null ? colors.textPrimary : colors.textTertiary,
+                        color: _targetDate != null
+                            ? colors.textPrimary
+                            : colors.textTertiary,
                       ),
                     ),
                   ],
@@ -260,13 +267,16 @@ class _GoalFormSheetState extends ConsumerState<GoalFormSheet> {
               value: _status,
               items: GoalStatus.values,
               itemLabel: _statusLabel,
-              onChanged: _saving ? null : (value) => setState(() => _status = value ?? _status),
+              onChanged: _saving
+                  ? null
+                  : (value) => setState(() => _status = value ?? _status),
             ),
             if (_error != null) ...[
               SizedBox(height: spacing.sm),
               Text(
                 _error!,
-                style: context.textStyles.bodySmall?.copyWith(color: colors.danger),
+                style: context.textStyles.bodySmall
+                    ?.copyWith(color: colors.danger),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -284,7 +294,8 @@ class _GoalFormSheetState extends ConsumerState<GoalFormSheet> {
 
   Widget _buildImagePreview(NortColors colors) {
     if (_pickedImageBytes != null) {
-      return Image.memory(_pickedImageBytes!, fit: BoxFit.cover, width: double.infinity, height: 120);
+      return Image.memory(_pickedImageBytes!,
+          fit: BoxFit.cover, width: double.infinity, height: 120);
     }
     if (widget.existingGoal?.imageUrl != null) {
       return Image.network(

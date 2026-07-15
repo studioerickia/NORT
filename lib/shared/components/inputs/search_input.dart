@@ -44,7 +44,8 @@ class SearchInput extends StatelessWidget {
         cursorColor: colors.brand.defaultColor,
         decoration: InputDecoration(
           hintText: placeholder,
-          hintStyle: context.textStyles.bodyLarge?.copyWith(color: colors.textTertiary),
+          hintStyle: context.textStyles.bodyLarge
+              ?.copyWith(color: colors.textTertiary),
           prefixIcon: Icon(Icons.search, size: 20, color: colors.textSecondary),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(

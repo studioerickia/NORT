@@ -32,13 +32,15 @@ class NortTextButton extends StatelessWidget {
     final colors = context.colors;
     final spacing = context.spacing;
 
-    final textColor = _enabled ? colors.brand.defaultColor : colors.textTertiary;
+    final textColor =
+        _enabled ? colors.brand.defaultColor : colors.textTertiary;
 
     return PressableScale(
       enabled: _enabled,
       onTap: onPressed,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: spacing.sm, vertical: spacing.xs),
+        padding:
+            EdgeInsets.symmetric(horizontal: spacing.sm, vertical: spacing.xs),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

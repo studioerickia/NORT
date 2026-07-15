@@ -70,7 +70,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
         );
 
     final publicUrl = _client.storage.from('avatars').getPublicUrl(path);
-    final bustedUrl = '$publicUrl?updated=${DateTime.now().millisecondsSinceEpoch}';
+    final bustedUrl =
+        '$publicUrl?updated=${DateTime.now().millisecondsSinceEpoch}';
 
     await _datasource.updateProfileRow(userId, {'avatar_url': bustedUrl});
     return bustedUrl;

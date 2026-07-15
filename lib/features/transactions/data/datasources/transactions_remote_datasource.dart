@@ -23,12 +23,15 @@ class TransactionsRemoteDatasource {
     return List<Map<String, dynamic>>.from(rows);
   }
 
-  Future<Map<String, dynamic>> insertTransaction(Map<String, dynamic> values) async {
-    final row = await _client.from('transactions').insert(values).select().single();
+  Future<Map<String, dynamic>> insertTransaction(
+      Map<String, dynamic> values) async {
+    final row =
+        await _client.from('transactions').insert(values).select().single();
     return row;
   }
 
-  Future<void> updateTransaction(String id, Map<String, dynamic> changes) async {
+  Future<void> updateTransaction(
+      String id, Map<String, dynamic> changes) async {
     await _client.from('transactions').update(changes).eq('id', id);
   }
 }

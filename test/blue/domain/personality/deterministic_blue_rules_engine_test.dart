@@ -18,7 +18,8 @@ void main() {
 
   group('greeting — horários (Guide, seção 5)', () {
     test('05:00 é manhã (limite inferior)', () {
-      final result = engine.greeting(now: DateTime(2026, 1, 1, 5, 0), firstName: 'Erick');
+      final result =
+          engine.greeting(now: DateTime(2026, 1, 1, 5, 0), firstName: 'Erick');
       expect(result.salutation, 'Bom dia, Erick');
     });
 
@@ -62,24 +63,28 @@ void main() {
 
   group('goalObservation — progresso (Guide, seções 6 e 7)', () {
     test('sem progresso (0%) -> silêncio deliberado', () {
-      final result = engine.goalObservation(progress: 0, remainingAmount: 1000, isCompleted: false);
+      final result = engine.goalObservation(
+          progress: 0, remainingAmount: 1000, isCompleted: false);
       expect(result.shouldDisplay, isFalse);
       expect(result.ruleId, 'goal.no_progress');
     });
 
     test('em andamento inicial (< 40%) -> incentivo neutro', () {
-      final result = engine.goalObservation(progress: 0.2, remainingAmount: 800, isCompleted: false);
+      final result = engine.goalObservation(
+          progress: 0.2, remainingAmount: 800, isCompleted: false);
       expect(result.shouldDisplay, isTrue);
       expect(result.text, 'Continue assim.');
     });
 
     test('em andamento avançado (40%–79%) -> "mais perto do que imagina"', () {
-      final result = engine.goalObservation(progress: 0.5, remainingAmount: 500, isCompleted: false);
+      final result = engine.goalObservation(
+          progress: 0.5, remainingAmount: 500, isCompleted: false);
       expect(result.text, contains('mais perto'));
     });
 
     test('quase concluída (>= 80%) -> cita o valor restante formatado', () {
-      final result = engine.goalObservation(progress: 0.85, remainingAmount: 230, isCompleted: false);
+      final result = engine.goalObservation(
+          progress: 0.85, remainingAmount: 230, isCompleted: false);
       expect(result.text, contains('R\$230,00'));
       expect(result.tone, BlueTone.reassuring);
     });
@@ -97,7 +102,8 @@ void main() {
     });
 
     test('concluída sem nome da meta não quebra', () {
-      final result = engine.goalObservation(progress: 1.0, remainingAmount: 0, isCompleted: true);
+      final result = engine.goalObservation(
+          progress: 1.0, remainingAmount: 0, isCompleted: true);
       expect(result.shouldDisplay, isTrue);
       expect(result.text, isNotEmpty);
     });
@@ -120,7 +126,9 @@ void main() {
       expect(result.tone, BlueTone.reassuring);
     });
 
-    test('saldo bem negativo -> tom continua tranquilizador, nunca escala pra alarme', () {
+    test(
+        'saldo bem negativo -> tom continua tranquilizador, nunca escala pra alarme',
+        () {
       final result = engine.balanceObservation(balance: -10000);
       expect(result.tone, BlueTone.reassuring);
       expect(result.suggestedMood, BlueMood.reassuring);
@@ -135,21 +143,32 @@ void main() {
     });
 
     test('sem transações', () {
-      final result = engine.emptyStateMessage(BlueEmptyStateKind.noTransactions);
+      final result =
+          engine.emptyStateMessage(BlueEmptyStateKind.noTransactions);
       expect(result.shouldDisplay, isTrue);
       expect(result.text, isNotEmpty);
     });
   });
 
-  group('Blue Personality Guide — nenhuma mensagem usa linguagem julgadora', () {
+  group('Blue Personality Guide — nenhuma mensagem usa linguagem julgadora',
+      () {
     final allMessages = <BlueMessage>[
-      engine.greeting(now: DateTime(2026, 1, 1, 8, 0), firstName: 'Erick').reassurance,
+      engine
+          .greeting(now: DateTime(2026, 1, 1, 8, 0), firstName: 'Erick')
+          .reassurance,
       engine.greeting(now: DateTime(2026, 1, 1, 14, 0)).reassurance,
       engine.greeting(now: DateTime(2026, 1, 1, 22, 0)).reassurance,
-      engine.goalObservation(progress: 0.2, remainingAmount: 800, isCompleted: false),
-      engine.goalObservation(progress: 0.5, remainingAmount: 500, isCompleted: false),
-      engine.goalObservation(progress: 0.9, remainingAmount: 100, isCompleted: false),
-      engine.goalObservation(progress: 1.0, remainingAmount: 0, isCompleted: true, goalTitle: 'Teste'),
+      engine.goalObservation(
+          progress: 0.2, remainingAmount: 800, isCompleted: false),
+      engine.goalObservation(
+          progress: 0.5, remainingAmount: 500, isCompleted: false),
+      engine.goalObservation(
+          progress: 0.9, remainingAmount: 100, isCompleted: false),
+      engine.goalObservation(
+          progress: 1.0,
+          remainingAmount: 0,
+          isCompleted: true,
+          goalTitle: 'Teste'),
       engine.balanceObservation(balance: -500),
       engine.emptyStateMessage(BlueEmptyStateKind.noActiveGoals),
       engine.emptyStateMessage(BlueEmptyStateKind.noTransactions),
@@ -162,7 +181,8 @@ void main() {
           expect(
             lowerText.contains(banned.toLowerCase()),
             isFalse,
-            reason: '"${message.ruleId}" contém a expressão banida "$banned": "${message.text}"',
+            reason:
+                '"${message.ruleId}" contém a expressão banida "$banned": "${message.text}"',
           );
         }
       });

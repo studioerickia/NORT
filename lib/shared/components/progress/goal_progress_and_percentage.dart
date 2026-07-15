@@ -40,7 +40,8 @@ class GoalProgress extends StatelessWidget {
         Row(
           children: [
             Text(currentAmountLabel, style: context.numericStyles.small),
-            Text(' de $targetAmountLabel', style: context.textStyles.bodyMedium),
+            Text(' de $targetAmountLabel',
+                style: context.textStyles.bodyMedium),
             const Spacer(),
             Text(
               '${(progress.clamp(0.0, 1.0) * 100).round()}%',
@@ -81,10 +82,12 @@ class PercentageBadge extends StatelessWidget {
     final spacing = context.spacing;
     final radii = context.radii;
     final color = positive ? colors.positive.defaultColor : colors.warning;
-    final background = positive ? colors.positiveSurface : colors.warningSurface;
+    final background =
+        positive ? colors.positiveSurface : colors.warningSurface;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: spacing.sm, vertical: spacing.xs / 2),
+      padding: EdgeInsets.symmetric(
+          horizontal: spacing.sm, vertical: spacing.xs / 2),
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(radii.pill),

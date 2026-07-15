@@ -41,7 +41,8 @@ void main() {
       expect(capturedContext.spacing.md, 12);
       expect(capturedContext.radii.md, 16);
       expect(capturedContext.shadows, isNotNull);
-      expect(capturedContext.motion.standard, const Duration(milliseconds: 240));
+      expect(
+          capturedContext.motion.standard, const Duration(milliseconds: 240));
       expect(capturedContext.numericStyles.large.fontFeatures, isNotEmpty);
     }
   });

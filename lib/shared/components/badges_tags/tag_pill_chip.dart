@@ -22,7 +22,8 @@ class Tag extends StatelessWidget {
     final radii = context.radii;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: spacing.sm, vertical: spacing.xs / 2),
+      padding: EdgeInsets.symmetric(
+          horizontal: spacing.sm, vertical: spacing.xs / 2),
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(radii.sm),
@@ -51,7 +52,8 @@ class Pill extends StatelessWidget {
     final radii = context.radii;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.xs),
+      padding:
+          EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.xs),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radii.pill),
         border: Border.all(color: colors.border),
@@ -94,7 +96,8 @@ class NortChip extends StatelessWidget {
     return PressableScale(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.xs),
+        padding:
+            EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.xs),
         decoration: BoxDecoration(
           color: background,
           borderRadius: BorderRadius.circular(radii.pill),
@@ -102,7 +105,9 @@ class NortChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(label, style: context.textStyles.labelMedium?.copyWith(color: textColor)),
+            Text(label,
+                style:
+                    context.textStyles.labelMedium?.copyWith(color: textColor)),
             if (onDelete != null) ...[
               SizedBox(width: spacing.xs),
               GestureDetector(

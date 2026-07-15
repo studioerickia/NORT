@@ -45,7 +45,8 @@ class TransactionsScreen extends ConsumerWidget {
     final categoriesAsync = ref.watch(categoriesProvider);
 
     final categoryById = <String, Category>{
-      for (final c in categoriesAsync.valueOrNull ?? const <Category>[]) c.id: c,
+      for (final c in categoriesAsync.valueOrNull ?? const <Category>[])
+        c.id: c,
     };
 
     return Scaffold(
@@ -53,7 +54,8 @@ class TransactionsScreen extends ConsumerWidget {
       appBar: NortTopAppBar(
         title: 'Transações',
         trailing: [
-          NortIconButton(icon: Icons.add, onPressed: () => _openCreateForm(context)),
+          NortIconButton(
+              icon: Icons.add, onPressed: () => _openCreateForm(context)),
         ],
       ),
       body: SafeArea(
@@ -78,7 +80,8 @@ class TransactionsScreen extends ConsumerWidget {
             SizedBox(height: spacing.xl),
             transactionsAsync.when(
               loading: () => Column(
-                children: List.generate(4, (_) => const TransactionRowSkeleton()),
+                children:
+                    List.generate(4, (_) => const TransactionRowSkeleton()),
               ),
               error: (error, _) => Padding(
                 padding: EdgeInsets.symmetric(vertical: spacing.xl),
@@ -121,13 +124,16 @@ class TransactionsScreen extends ConsumerWidget {
     );
   }
 
-  List<MapEntry<DateTime, List<Transaction>>> _groupByDay(List<Transaction> transactions) {
+  List<MapEntry<DateTime, List<Transaction>>> _groupByDay(
+      List<Transaction> transactions) {
     final map = <DateTime, List<Transaction>>{};
     for (final t in transactions) {
-      final key = DateTime(t.occurredAt.year, t.occurredAt.month, t.occurredAt.day);
+      final key =
+          DateTime(t.occurredAt.year, t.occurredAt.month, t.occurredAt.day);
       map.putIfAbsent(key, () => []).add(t);
     }
-    final entries = map.entries.toList()..sort((a, b) => b.key.compareTo(a.key));
+    final entries = map.entries.toList()
+      ..sort((a, b) => b.key.compareTo(a.key));
     return entries;
   }
 }
@@ -155,7 +161,9 @@ class _DayGroup extends StatelessWidget {
   }
 
   String get _countLabel {
-    return transactions.length == 1 ? '1 transação' : '${transactions.length} transações';
+    return transactions.length == 1
+        ? '1 transação'
+        : '${transactions.length} transações';
   }
 
   @override
@@ -172,7 +180,8 @@ class _DayGroup extends StatelessWidget {
           SizedBox(width: spacing.xs),
           Text(
             '· $_countLabel',
-            style: context.textStyles.bodySmall?.copyWith(color: colors.textTertiary),
+            style: context.textStyles.bodySmall
+                ?.copyWith(color: colors.textTertiary),
           ),
         ],
       ),
@@ -227,7 +236,8 @@ class _TransactionRow extends StatelessWidget {
             Container(
               width: 36,
               height: 36,
-              decoration: BoxDecoration(color: colors.surface, shape: BoxShape.circle),
+              decoration:
+                  BoxDecoration(color: colors.surface, shape: BoxShape.circle),
               child: Icon(
                 isIncome ? Icons.arrow_downward : Icons.arrow_upward,
                 size: 16,
@@ -247,7 +257,9 @@ class _TransactionRow extends StatelessWidget {
             Text(
               '${isIncome ? '+' : ''}${formatCurrencyBRL(transaction.amount)}',
               style: context.numericStyles.small.copyWith(
-                color: isIncome ? colors.positive.defaultColor : colors.textPrimary,
+                color: isIncome
+                    ? colors.positive.defaultColor
+                    : colors.textPrimary,
               ),
             ),
           ],

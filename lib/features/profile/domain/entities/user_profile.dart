@@ -17,7 +17,6 @@ class UserProfile {
   final String timezone;
   final DateTime? onboardingCompletedAt;
 
-  String get displayNameOrFallback => displayName?.isNotEmpty == true
-      ? displayName!
-      : email.split('@').first;
+  String get displayNameOrFallback =>
+      displayName?.isNotEmpty == true ? displayName! : email.split('@').first;
 }

@@ -24,7 +24,8 @@ class _NortBadgeBase extends StatelessWidget {
     final radii = context.radii;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: spacing.sm, vertical: spacing.xs / 2),
+      padding: EdgeInsets.symmetric(
+          horizontal: spacing.sm, vertical: spacing.xs / 2),
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(radii.pill),
@@ -36,7 +37,8 @@ class _NortBadgeBase extends StatelessWidget {
             Icon(icon, size: 12, color: color),
             SizedBox(width: spacing.xs / 2),
           ],
-          Text(label, style: context.textStyles.labelSmall?.copyWith(color: color)),
+          Text(label,
+              style: context.textStyles.labelSmall?.copyWith(color: color)),
         ],
       ),
     );

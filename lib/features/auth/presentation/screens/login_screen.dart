@@ -75,7 +75,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void _showComingSoon() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Em breve — login social ainda não está disponível.')),
+      const SnackBar(
+          content: Text('Em breve — login social ainda não está disponível.')),
     );
   }
 
@@ -88,7 +89,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       backgroundColor: colors.background,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: spacing.xl, vertical: spacing.xl),
+          padding: EdgeInsets.symmetric(
+              horizontal: spacing.xl, vertical: spacing.xl),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -96,7 +98,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               FadeScaleIn(
                 child: Column(
                   children: [
-                    const BlueAvatar(state: BlueState.idle, size: 64, showGlow: false),
+                    const BlueAvatar(
+                        state: BlueState.idle, size: 64, showGlow: false),
                     SizedBox(height: spacing.lg),
                     Text(
                       'Entrar no NORT',
@@ -128,8 +131,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               SizedBox(height: spacing.xl),
               Center(
                 child: NortTextButton(
-                  label: _showEmailForm ? 'Ocultar e-mail' : 'Continuar com e-mail',
-                  onPressed: () => setState(() => _showEmailForm = !_showEmailForm),
+                  label: _showEmailForm
+                      ? 'Ocultar e-mail'
+                      : 'Continuar com e-mail',
+                  onPressed: () =>
+                      setState(() => _showEmailForm = !_showEmailForm),
                 ),
               ),
               AnimatedSize(
@@ -157,7 +163,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               SizedBox(height: spacing.sm),
                               Text(
                                 _errorMessage!,
-                                style: context.textStyles.bodySmall?.copyWith(color: colors.danger),
+                                style: context.textStyles.bodySmall
+                                    ?.copyWith(color: colors.danger),
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -178,7 +185,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   _isSignUp
                                       ? 'Já tem conta? Entrar'
                                       : 'Ainda não tem conta? Criar conta',
-                                  style: context.textStyles.labelLarge?.copyWith(
+                                  style:
+                                      context.textStyles.labelLarge?.copyWith(
                                     color: colors.brand.defaultColor,
                                   ),
                                 ),
@@ -223,7 +231,8 @@ class _AppleSignInButton extends StatelessWidget {
             SizedBox(width: spacing.sm),
             Text(
               'Continuar com Apple',
-              style: context.textStyles.titleMedium?.copyWith(color: Colors.white),
+              style:
+                  context.textStyles.titleMedium?.copyWith(color: Colors.white),
             ),
           ],
         ),
@@ -260,7 +269,8 @@ class _GoogleSignInButton extends StatelessWidget {
             SizedBox(width: spacing.sm),
             Text(
               'Continuar com Google',
-              style: context.textStyles.titleMedium?.copyWith(color: colors.textPrimary),
+              style: context.textStyles.titleMedium
+                  ?.copyWith(color: colors.textPrimary),
             ),
           ],
         ),

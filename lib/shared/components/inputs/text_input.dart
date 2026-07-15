@@ -76,7 +76,9 @@ class _NortTextInputState extends State<NortTextInput> {
         AnimatedContainer(
           duration: context.motion.micro,
           decoration: BoxDecoration(
-            color: widget.enabled ? colors.surface : colors.surface.withOpacity(0.6),
+            color: widget.enabled
+                ? colors.surface
+                : colors.surface.withOpacity(0.6),
             borderRadius: radii.smRadius,
             border: Border.all(color: borderColor, width: 1.5),
           ),
@@ -91,9 +93,11 @@ class _NortTextInputState extends State<NortTextInput> {
             cursorColor: colors.brand.defaultColor,
             decoration: InputDecoration(
               hintText: widget.placeholder,
-              hintStyle: context.textStyles.bodyLarge?.copyWith(color: colors.textTertiary),
+              hintStyle: context.textStyles.bodyLarge
+                  ?.copyWith(color: colors.textTertiary),
               prefixIcon: widget.prefixIcon != null
-                  ? Icon(widget.prefixIcon, size: 20, color: colors.textSecondary)
+                  ? Icon(widget.prefixIcon,
+                      size: 20, color: colors.textSecondary)
                   : null,
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(

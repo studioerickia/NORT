@@ -14,12 +14,14 @@ class SupabaseAuthService implements AuthService {
   bool get isLoggedIn => _client.auth.currentSession != null;
 
   @override
-  Future<void> signUpWithEmail({required String email, required String password}) async {
+  Future<void> signUpWithEmail(
+      {required String email, required String password}) async {
     await _client.auth.signUp(email: email, password: password);
   }
 
   @override
-  Future<void> signInWithEmail({required String email, required String password}) async {
+  Future<void> signInWithEmail(
+      {required String email, required String password}) async {
     await _client.auth.signInWithPassword(email: email, password: password);
   }
 

@@ -53,7 +53,8 @@ class _ComponentPreviewScreenState extends State<ComponentPreviewScreen> {
               SizedBox(height: spacing.sm),
               const PrimaryButton(label: 'Desabilitado', onPressed: null),
               SizedBox(height: spacing.sm),
-              const PrimaryButton(label: 'Salvando...', loading: true, onPressed: null),
+              const PrimaryButton(
+                  label: 'Salvando...', loading: true, onPressed: null),
               SizedBox(height: spacing.sm),
               SecondaryButton(label: 'Ver detalhes', onPressed: () {}),
               SizedBox(height: spacing.sm),
@@ -61,7 +62,8 @@ class _ComponentPreviewScreenState extends State<ComponentPreviewScreen> {
               SizedBox(height: spacing.sm),
               Row(
                 children: [
-                  NortIconButton(icon: Icons.notifications_outlined, onPressed: () {}),
+                  NortIconButton(
+                      icon: Icons.notifications_outlined, onPressed: () {}),
                   SizedBox(width: spacing.md),
                   NortFab(onPressed: () {}),
                 ],
@@ -140,16 +142,20 @@ class _ComponentPreviewScreenState extends State<ComponentPreviewScreen> {
               BlueMessageBubble(
                 text: 'Essa compra cabe, mas reduziria seu limite diário.',
                 time: '09:41',
-                avatar: const BlueAvatar(state: BlueState.idle, size: 28, showGlow: false),
+                avatar: const BlueAvatar(
+                    state: BlueState.idle, size: 28, showGlow: false),
               ),
               SizedBox(height: spacing.sm),
-              const Align(alignment: Alignment.centerLeft, child: TypingIndicator()),
+              const Align(
+                  alignment: Alignment.centerLeft, child: TypingIndicator()),
               SizedBox(height: spacing.sm),
               Wrap(
                 spacing: spacing.sm,
                 children: [
-                  SuggestionChip(label: 'Quais são minhas prioridades?', onTap: () {}),
-                  SuggestionChip(label: 'Como estou esta semana?', onTap: () {}),
+                  SuggestionChip(
+                      label: 'Quais são minhas prioridades?', onTap: () {}),
+                  SuggestionChip(
+                      label: 'Como estou esta semana?', onTap: () {}),
                 ],
               ),
             ],
@@ -173,13 +179,17 @@ class _ComponentPreviewScreenState extends State<ComponentPreviewScreen> {
           _CatalogSection(
             title: 'Inputs',
             children: [
-              NortTextInput(label: 'Nome', placeholder: 'Digite seu nome', controller: _textController),
+              NortTextInput(
+                  label: 'Nome',
+                  placeholder: 'Digite seu nome',
+                  controller: _textController),
               SizedBox(height: spacing.md),
               const SearchInput(),
               SizedBox(height: spacing.md),
               const MoneyInput(),
               SizedBox(height: spacing.md),
-              ChatInput(controller: _chatController, hasText: false, onMicTap: () {}),
+              ChatInput(
+                  controller: _chatController, hasText: false, onMicTap: () {}),
               SizedBox(height: spacing.md),
               Dropdown<String>(
                 label: 'Categoria',
@@ -191,10 +201,21 @@ class _ComponentPreviewScreenState extends State<ComponentPreviewScreen> {
               SizedBox(height: spacing.md),
               Row(
                 children: [
-                  NortSwitch(value: _switchValue, onChanged: (v) => setState(() => _switchValue = v)),
-                  NortCheckbox(value: _checkboxValue, onChanged: (v) => setState(() => _checkboxValue = v ?? false)),
-                  NortRadio<String>(value: 'a', groupValue: _radioValue, onChanged: (v) => setState(() => _radioValue = v)),
-                  NortRadio<String>(value: 'b', groupValue: _radioValue, onChanged: (v) => setState(() => _radioValue = v)),
+                  NortSwitch(
+                      value: _switchValue,
+                      onChanged: (v) => setState(() => _switchValue = v)),
+                  NortCheckbox(
+                      value: _checkboxValue,
+                      onChanged: (v) =>
+                          setState(() => _checkboxValue = v ?? false)),
+                  NortRadio<String>(
+                      value: 'a',
+                      groupValue: _radioValue,
+                      onChanged: (v) => setState(() => _radioValue = v)),
+                  NortRadio<String>(
+                      value: 'b',
+                      groupValue: _radioValue,
+                      onChanged: (v) => setState(() => _radioValue = v)),
                 ],
               ),
             ],
@@ -202,9 +223,16 @@ class _ComponentPreviewScreenState extends State<ComponentPreviewScreen> {
           _CatalogSection(
             title: 'Navegação',
             children: [
-              NavigationTile(icon: Icons.person_outline, title: 'Perfil', subtitle: 'Editar informações', onTap: () {}),
+              NavigationTile(
+                  icon: Icons.person_outline,
+                  title: 'Perfil',
+                  subtitle: 'Editar informações',
+                  onTap: () {}),
               const NortDivider(),
-              SectionHeader(title: 'Resumo do dia', actionLabel: 'Ver tudo', onAction: () {}),
+              SectionHeader(
+                  title: 'Resumo do dia',
+                  actionLabel: 'Ver tudo',
+                  onAction: () {}),
               SizedBox(height: spacing.md),
               NortTabBar(
                 tabs: const ['Ativas', 'Concluídas', 'Sonhos'],
@@ -232,7 +260,10 @@ class _ComponentPreviewScreenState extends State<ComponentPreviewScreen> {
               SizedBox(height: spacing.md),
               const SizedBox(
                 height: 160,
-                child: EmptyState(icon: Icons.flag_outlined, title: 'Nova meta', description: 'Comece a construir seu próximo sonho.'),
+                child: EmptyState(
+                    icon: Icons.flag_outlined,
+                    title: 'Nova meta',
+                    description: 'Comece a construir seu próximo sonho.'),
               ),
               SizedBox(height: spacing.md),
               Column(
@@ -294,7 +325,10 @@ class _ComponentPreviewScreenState extends State<ComponentPreviewScreen> {
               ]),
               SizedBox(height: spacing.md),
               const StatisticRow(label: 'Categoria', value: 'Alimentação'),
-              const TimelineItem(dateLabel: 'Mar 2026', title: 'Mudança de cidade', isLast: true),
+              const TimelineItem(
+                  dateLabel: 'Mar 2026',
+                  title: 'Mudança de cidade',
+                  isLast: true),
             ],
           ),
         ],
@@ -314,7 +348,8 @@ class _CatalogSection extends StatelessWidget {
     final spacing = context.spacing;
     return Section(
       header: Text(title, style: context.textStyles.headlineSmall),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: children),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, children: children),
     );
   }
 }

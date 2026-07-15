@@ -48,9 +48,8 @@ class MessageStatus extends StatelessWidget {
         ? colors.brand.defaultColor
         : colors.textTertiary;
 
-    final icon = status == NortMessageDeliveryStatus.sent
-        ? Icons.check
-        : Icons.done_all;
+    final icon =
+        status == NortMessageDeliveryStatus.sent ? Icons.check : Icons.done_all;
 
     return Icon(icon, size: 14, color: color);
   }

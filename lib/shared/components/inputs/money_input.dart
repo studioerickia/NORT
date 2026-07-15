@@ -40,7 +40,8 @@ class _MoneyInputState extends State<MoneyInput> {
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() => setState(() => _focused = _focusNode.hasFocus));
+    _focusNode
+        .addListener(() => setState(() => _focused = _focusNode.hasFocus));
   }
 
   @override
@@ -65,7 +66,8 @@ class _MoneyInputState extends State<MoneyInput> {
           width: 1.5,
         ),
       ),
-      padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
+      padding:
+          EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
       child: Row(
         children: [
           Text(widget.currencyPrefix, style: context.numericStyles.medium),
@@ -75,7 +77,8 @@ class _MoneyInputState extends State<MoneyInput> {
               controller: widget.controller,
               focusNode: _focusNode,
               enabled: widget.enabled,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               onChanged: widget.onChanged,
               style: context.numericStyles.medium,
               cursorColor: colors.brand.defaultColor,

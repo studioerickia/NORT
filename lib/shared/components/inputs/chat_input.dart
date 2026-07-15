@@ -39,7 +39,8 @@ class ChatInput extends StatelessWidget {
     final shadows = context.shadows;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: spacing.sm, vertical: spacing.xs),
+      padding:
+          EdgeInsets.symmetric(horizontal: spacing.sm, vertical: spacing.xs),
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(radii.pill),
@@ -56,7 +57,8 @@ class ChatInput extends StatelessWidget {
               cursorColor: colors.brand.defaultColor,
               decoration: InputDecoration(
                 hintText: placeholder,
-                hintStyle: context.textStyles.bodyLarge?.copyWith(color: colors.textTertiary),
+                hintStyle: context.textStyles.bodyLarge
+                    ?.copyWith(color: colors.textTertiary),
                 border: InputBorder.none,
                 isDense: true,
               ),

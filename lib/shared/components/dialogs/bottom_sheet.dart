@@ -19,7 +19,8 @@ class NortBottomSheet extends StatelessWidget {
         maxHeight: MediaQuery.of(context).size.height * 0.85,
       ),
       child: Container(
-        padding: EdgeInsets.fromLTRB(spacing.lg, spacing.sm, spacing.lg, spacing.xl),
+        padding:
+            EdgeInsets.fromLTRB(spacing.lg, spacing.sm, spacing.lg, spacing.xl),
         decoration: BoxDecoration(
           color: colors.surfaceElevated,
           borderRadius: BorderRadius.only(

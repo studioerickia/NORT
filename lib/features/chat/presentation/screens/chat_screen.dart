@@ -94,15 +94,18 @@ class _ChatScreenState extends State<ChatScreen> {
                   Wrap(
                     spacing: spacing.sm,
                     children: [
-                      SuggestionChip(label: 'Quais são minhas prioridades?', onTap: () {}),
-                      SuggestionChip(label: 'Como estou esta semana?', onTap: () {}),
+                      SuggestionChip(
+                          label: 'Quais são minhas prioridades?', onTap: () {}),
+                      SuggestionChip(
+                          label: 'Como estou esta semana?', onTap: () {}),
                     ],
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(spacing.lg, 0, spacing.lg, spacing.md),
+              padding:
+                  EdgeInsets.fromLTRB(spacing.lg, 0, spacing.lg, spacing.md),
               child: ChatInput(
                 controller: _controller,
                 hasText: _hasText,

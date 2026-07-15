@@ -54,7 +54,9 @@ class TrashSheet extends ConsumerWidget {
                   trailing: NortTextButton(
                     label: 'Restaurar',
                     onPressed: () async {
-                      await ref.read(goalsRepositoryProvider).restoreGoal(goals[i].id);
+                      await ref
+                          .read(goalsRepositoryProvider)
+                          .restoreGoal(goals[i].id);
                       ref.invalidate(deletedGoalsProvider);
                     },
                   ),

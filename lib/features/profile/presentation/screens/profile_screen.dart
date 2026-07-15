@@ -23,7 +23,8 @@ const List<String> _allowedAvatarExtensions = ['jpg', 'jpeg', 'png', 'webp'];
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
-  Future<void> _editName(BuildContext context, WidgetRef ref, String currentName) async {
+  Future<void> _editName(
+      BuildContext context, WidgetRef ref, String currentName) async {
     await showDialog<void>(
       context: context,
       builder: (_) => _EditNameDialog(initialName: currentName),
@@ -43,7 +44,8 @@ class ProfileScreen extends ConsumerWidget {
     final extension = file.name.split('.').last.toLowerCase();
     if (!_allowedAvatarExtensions.contains(extension)) {
       messenger.showSnackBar(
-        const SnackBar(content: Text('Formato não suportado — use JPG, PNG ou WEBP.')),
+        const SnackBar(
+            content: Text('Formato não suportado — use JPG, PNG ou WEBP.')),
       );
       return;
     }
@@ -57,7 +59,8 @@ class ProfileScreen extends ConsumerWidget {
     }
 
     messenger.showSnackBar(
-      const SnackBar(content: Text('Enviando foto...'), duration: Duration(seconds: 2)),
+      const SnackBar(
+          content: Text('Enviando foto...'), duration: Duration(seconds: 2)),
     );
 
     try {
@@ -68,7 +71,8 @@ class ProfileScreen extends ConsumerWidget {
       ref.invalidate(currentProfileProvider);
     } catch (_) {
       messenger.showSnackBar(
-        const SnackBar(content: Text('Não foi possível enviar a imagem. Tente de novo.')),
+        const SnackBar(
+            content: Text('Não foi possível enviar a imagem. Tente de novo.')),
       );
     }
   }
@@ -182,7 +186,8 @@ class _ProfileHeader extends StatelessWidget {
                 avatarUrl != null
                     ? UserAvatar(
                         size: 72,
-                        imageBuilder: (context) => Image.network(avatarUrl, fit: BoxFit.cover),
+                        imageBuilder: (context) =>
+                            Image.network(avatarUrl, fit: BoxFit.cover),
                       )
                     : UserAvatar(initials: initials, size: 72),
                 Positioned(
@@ -196,7 +201,8 @@ class _ProfileHeader extends StatelessWidget {
                       shape: BoxShape.circle,
                       border: Border.all(color: colors.background, width: 2),
                     ),
-                    child: Icon(Icons.camera_alt, size: 12, color: colors.textOnBrand),
+                    child: Icon(Icons.camera_alt,
+                        size: 12, color: colors.textOnBrand),
                   ),
                 ),
               ],

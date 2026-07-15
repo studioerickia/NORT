@@ -135,12 +135,14 @@ class _BlueListeningState extends State<BlueListening>
                   height: widget.size * 0.7,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: colors.brand.defaultColor, width: 2),
+                    border:
+                        Border.all(color: colors.brand.defaultColor, width: 2),
                   ),
                 ),
               ),
             ),
-            Icon(Icons.mic_none, size: widget.size * 0.4, color: colors.brand.defaultColor),
+            Icon(Icons.mic_none,
+                size: widget.size * 0.4, color: colors.brand.defaultColor),
           ],
         );
       },
@@ -177,7 +179,8 @@ class _BlueCelebratingState extends State<BlueCelebrating>
     _scale = Tween<double>(
       begin: 0.95,
       end: 1.05,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack));
+    ).animate(
+        CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack));
   }
 
   @override
@@ -191,7 +194,8 @@ class _BlueCelebratingState extends State<BlueCelebrating>
     final colors = context.colors;
     return ScaleTransition(
       scale: _scale,
-      child: Icon(Icons.celebration_outlined, size: widget.size * 0.5, color: colors.positive.defaultColor),
+      child: Icon(Icons.celebration_outlined,
+          size: widget.size * 0.5, color: colors.positive.defaultColor),
     );
   }
 }

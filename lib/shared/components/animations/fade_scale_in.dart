@@ -15,7 +15,8 @@ import '../../../core/extensions/nort_theme_context_x.dart';
 /// FadeScaleIn(child: GoalCard(...))
 /// ```
 class FadeScaleIn extends StatefulWidget {
-  const FadeScaleIn({super.key, required this.child, this.delay = Duration.zero});
+  const FadeScaleIn(
+      {super.key, required this.child, this.delay = Duration.zero});
 
   final Widget child;
   final Duration delay;
@@ -62,7 +63,8 @@ class _FadeScaleInState extends State<FadeScaleIn>
 
   @override
   Widget build(BuildContext context) {
-    final curved = CurvedAnimation(parent: _controller, curve: context.motion.enter);
+    final curved =
+        CurvedAnimation(parent: _controller, curve: context.motion.enter);
     return FadeTransition(
       opacity: curved,
       child: ScaleTransition(

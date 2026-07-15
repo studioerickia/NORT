@@ -22,7 +22,8 @@ class WhaleLabsSignature extends StatelessWidget {
     final colors = context.colors;
     final spacing = context.spacing;
 
-    final style = context.textStyles.bodySmall?.copyWith(color: colors.textTertiary);
+    final style =
+        context.textStyles.bodySmall?.copyWith(color: colors.textTertiary);
 
     if (variant == WhaleLabsSignatureVariant.caption) {
       return Text('by Whale Labs', style: style, textAlign: TextAlign.center);
@@ -33,7 +34,8 @@ class WhaleLabsSignature extends StatelessWidget {
       children: [
         Text('NORT $version', style: style, textAlign: TextAlign.center),
         SizedBox(height: spacing.xs / 2),
-        Text('Crafted by Whale Labs', style: style, textAlign: TextAlign.center),
+        Text('Crafted by Whale Labs',
+            style: style, textAlign: TextAlign.center),
       ],
     );
   }

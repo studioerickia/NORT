@@ -137,9 +137,11 @@ class HomeScreen extends ConsumerWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.auto_awesome, size: 14, color: colors.brand.defaultColor),
+                          Icon(Icons.auto_awesome,
+                              size: 14, color: colors.brand.defaultColor),
                           SizedBox(width: spacing.xs),
-                          Text('Fale com a Blue', style: context.textStyles.labelLarge),
+                          Text('Fale com a Blue',
+                              style: context.textStyles.labelLarge),
                         ],
                       ),
                     ),
@@ -148,7 +150,6 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
             SizedBox(height: spacing.xxxl),
-
             if (isLoading) ...[
               const GoalCardSkeleton(),
               SizedBox(height: spacing.md),
@@ -165,7 +166,8 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
             ] else ...[
-              _buildBalanceCard(context, goalsAsync.value!, transactionsAsync.value!, period),
+              _buildBalanceCard(
+                  context, goalsAsync.value!, transactionsAsync.value!, period),
               SizedBox(height: spacing.md),
               _buildInsightSection(
                 context,
@@ -253,7 +255,8 @@ class HomeScreen extends ConsumerWidget {
       }
     }
 
-    final activeGoalsCount = goals.where((g) => g.status == GoalStatus.active).length;
+    final activeGoalsCount =
+        goals.where((g) => g.status == GoalStatus.active).length;
 
     return FadeScaleIn(
       delay: const Duration(milliseconds: 80),
@@ -270,13 +273,15 @@ class HomeScreen extends ConsumerWidget {
           children: [
             Text('Saldo disponível', style: context.textStyles.bodyMedium),
             SizedBox(height: spacing.xs),
-            AnimatedCurrencyText(value: balance, style: context.numericStyles.large),
+            AnimatedCurrencyText(
+                value: balance, style: context.numericStyles.large),
             SizedBox(height: spacing.lg),
             Divider(height: 1, color: colors.border),
             SizedBox(height: spacing.md),
             Text(
               'Resumo · ${period.label}',
-              style: context.textStyles.labelMedium?.copyWith(color: colors.textTertiary),
+              style: context.textStyles.labelMedium
+                  ?.copyWith(color: colors.textTertiary),
             ),
             SizedBox(height: spacing.sm),
             Row(
@@ -302,7 +307,9 @@ class HomeScreen extends ConsumerWidget {
                 Expanded(
                   child: _InlineStat(
                     icon: Icons.check_circle_outline,
-                    label: activeGoalsCount == 1 ? '1 meta ativa' : '$activeGoalsCount metas ativas',
+                    label: activeGoalsCount == 1
+                        ? '1 meta ativa'
+                        : '$activeGoalsCount metas ativas',
                   ),
                 ),
                 Expanded(
@@ -319,8 +326,10 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildGoalSection(BuildContext context, BlueRulesEngine blueRulesEngine, List<Goal> goals) {
-    final activeGoals = goals.where((g) => g.status == GoalStatus.active).toList();
+  Widget _buildGoalSection(
+      BuildContext context, BlueRulesEngine blueRulesEngine, List<Goal> goals) {
+    final activeGoals =
+        goals.where((g) => g.status == GoalStatus.active).toList();
     final hasActiveGoal = activeGoals.isNotEmpty;
 
     return Section(
@@ -339,28 +348,34 @@ class HomeScreen extends ConsumerWidget {
                 delay: const Duration(milliseconds: 140),
                 child: GoalCard(
                   title: activeGoals.first.title,
-                  currentAmountLabel: formatCurrencyBRL(activeGoals.first.currentAmount),
-                  targetAmountLabel: formatCurrencyBRL(activeGoals.first.targetAmount),
+                  currentAmountLabel:
+                      formatCurrencyBRL(activeGoals.first.currentAmount),
+                  targetAmountLabel:
+                      formatCurrencyBRL(activeGoals.first.targetAmount),
                   progress: activeGoals.first.progress,
                   dateLabel: activeGoals.first.targetDate != null
                       ? 'Conclusão: ${formatMonthYear(activeGoals.first.targetDate!)}'
                       : 'Sem data definida',
                   imageBuilder: activeGoals.first.imageUrl != null
-                      ? (context) => Image.network(activeGoals.first.imageUrl!, fit: BoxFit.cover)
+                      ? (context) => Image.network(activeGoals.first.imageUrl!,
+                          fit: BoxFit.cover)
                       : null,
                   onTap: () => context.go(AppRoutes.goals),
                 ),
               )
             : _GoalsEmptyState(
                 key: const ValueKey('goals-empty'),
-                title: blueRulesEngine.emptyStateMessage(BlueEmptyStateKind.noActiveGoals).text,
+                title: blueRulesEngine
+                    .emptyStateMessage(BlueEmptyStateKind.noActiveGoals)
+                    .text,
                 onCreateTap: () => context.go(AppRoutes.goals),
               ),
       ),
     );
   }
 
-  Widget _buildTransactionsSection(BuildContext context, List<Transaction> transactions) {
+  Widget _buildTransactionsSection(
+      BuildContext context, List<Transaction> transactions) {
     final colors = context.colors;
     final spacing = context.spacing;
     final recent = transactions.take(3).toList();
@@ -411,7 +426,8 @@ class HomeScreen extends ConsumerWidget {
 }
 
 class _GoalsEmptyState extends StatelessWidget {
-  const _GoalsEmptyState({super.key, required this.title, required this.onCreateTap});
+  const _GoalsEmptyState(
+      {super.key, required this.title, required this.onCreateTap});
 
   final String title;
   final VoidCallback onCreateTap;
@@ -440,7 +456,8 @@ class _GoalsEmptyState extends StatelessWidget {
             Text(
               'Crie sua primeira meta e deixe\na Blue acompanhar sua jornada.',
               textAlign: TextAlign.center,
-              style: context.textStyles.bodyMedium?.copyWith(color: colors.textSecondary),
+              style: context.textStyles.bodyMedium
+                  ?.copyWith(color: colors.textSecondary),
             ),
             SizedBox(height: spacing.lg),
             PrimaryButton(
@@ -504,7 +521,8 @@ class _RecentTransactionRow extends StatelessWidget {
           Container(
             width: 32,
             height: 32,
-            decoration: BoxDecoration(color: colors.background, shape: BoxShape.circle),
+            decoration:
+                BoxDecoration(color: colors.background, shape: BoxShape.circle),
             child: Icon(
               isIncome ? Icons.arrow_downward : Icons.arrow_upward,
               size: 14,
@@ -524,7 +542,8 @@ class _RecentTransactionRow extends StatelessWidget {
           Text(
             '${isIncome ? '+' : ''}${formatCurrencyBRL(transaction.amount)}',
             style: context.numericStyles.small.copyWith(
-              color: isIncome ? colors.positive.defaultColor : colors.textPrimary,
+              color:
+                  isIncome ? colors.positive.defaultColor : colors.textPrimary,
             ),
           ),
         ],

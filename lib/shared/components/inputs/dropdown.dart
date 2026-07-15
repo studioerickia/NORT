@@ -56,7 +56,8 @@ class Dropdown<T> extends StatelessWidget {
             child: DropdownButton<T>(
               value: value,
               isExpanded: true,
-              icon: Icon(Icons.keyboard_arrow_down, color: colors.textSecondary),
+              icon:
+                  Icon(Icons.keyboard_arrow_down, color: colors.textSecondary),
               style: context.textStyles.bodyLarge,
               dropdownColor: colors.surfaceElevated,
               borderRadius: radii.mdRadius,

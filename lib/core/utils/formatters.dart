@@ -15,13 +15,24 @@ String formatCurrencyBRL(double value) {
 }
 
 const _monthAbbreviations = [
-  'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-  'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez',
+  'Jan',
+  'Fev',
+  'Mar',
+  'Abr',
+  'Mai',
+  'Jun',
+  'Jul',
+  'Ago',
+  'Set',
+  'Out',
+  'Nov',
+  'Dez',
 ];
 
 String formatMonthYear(DateTime date) {
   return '${_monthAbbreviations[date.month - 1]} ${date.year}';
 }
+
 double? parseAmountInput(String text) {
   final normalized = text.trim().replaceAll('.', '').replaceAll(',', '.');
   return double.tryParse(normalized) ?? double.tryParse(text.trim());

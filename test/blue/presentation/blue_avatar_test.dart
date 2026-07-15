@@ -15,7 +15,8 @@ Widget _wrap(
         ? null
         : (context, materialChild) {
             return MediaQuery(
-              data: MediaQuery.of(context).copyWith(disableAnimations: disableAnimations),
+              data: MediaQuery.of(context)
+                  .copyWith(disableAnimations: disableAnimations),
               child: materialChild!,
             );
           },
@@ -42,12 +43,17 @@ void main() {
       await tester.pump();
 
       final sizedBoxes = tester.widgetList<SizedBox>(find.byType(SizedBox));
-      final matches = sizedBoxes.where((box) => box.width == size && box.height == size);
-      expect(matches, isNotEmpty, reason: 'Esperava um SizedBox de ${size}x$size');
+      final matches =
+          sizedBoxes.where((box) => box.width == size && box.height == size);
+      expect(matches, isNotEmpty,
+          reason: 'Esperava um SizedBox de ${size}x$size');
     });
 
-    testWidgets('tamanho pequeno (18px, usado em observações inline) não quebra', (tester) async {
-      await tester.pumpWidget(_wrap(const BlueAvatar(size: 18, showGlow: false)));
+    testWidgets(
+        'tamanho pequeno (18px, usado em observações inline) não quebra',
+        (tester) async {
+      await tester
+          .pumpWidget(_wrap(const BlueAvatar(size: 18, showGlow: false)));
       await tester.pump();
       expect(tester.takeException(), isNull);
     });
@@ -55,21 +61,25 @@ void main() {
 
   group('BlueAvatar — tema claro e escuro', () {
     testWidgets('renderiza sem erro no tema claro', (tester) async {
-      await tester.pumpWidget(_wrap(const BlueAvatar(), brightness: Brightness.light));
+      await tester
+          .pumpWidget(_wrap(const BlueAvatar(), brightness: Brightness.light));
       await tester.pump();
       expect(tester.takeException(), isNull);
     });
 
     testWidgets('renderiza sem erro no tema escuro', (tester) async {
-      await tester.pumpWidget(_wrap(const BlueAvatar(), brightness: Brightness.dark));
+      await tester
+          .pumpWidget(_wrap(const BlueAvatar(), brightness: Brightness.dark));
       await tester.pump();
       expect(tester.takeException(), isNull);
     });
   });
 
   group('BlueAvatar — acessibilidade', () {
-    testWidgets('tem semanticLabel padrão quando nenhum é fornecido', (tester) async {
-      await tester.pumpWidget(_wrap(const BlueAvatar(state: BlueState.celebrating)));
+    testWidgets('tem semanticLabel padrão quando nenhum é fornecido',
+        (tester) async {
+      await tester
+          .pumpWidget(_wrap(const BlueAvatar(state: BlueState.celebrating)));
       await tester.pump();
 
       final semantics = tester.getSemantics(find.byType(BlueAvatar));
@@ -96,8 +106,11 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('respeita MediaQuery.disableAnimations (reduzir movimento do SO)', (tester) async {
-      await tester.pumpWidget(_wrap(const BlueAvatar(), disableAnimations: true));
+    testWidgets(
+        'respeita MediaQuery.disableAnimations (reduzir movimento do SO)',
+        (tester) async {
+      await tester
+          .pumpWidget(_wrap(const BlueAvatar(), disableAnimations: true));
       await tester.pump();
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
@@ -106,7 +119,8 @@ void main() {
 
   group('BlueAvatar — heroTag', () {
     testWidgets('envolve em Hero quando heroTag é fornecido', (tester) async {
-      await tester.pumpWidget(_wrap(const BlueAvatar(heroTag: 'blue-test-tag')));
+      await tester
+          .pumpWidget(_wrap(const BlueAvatar(heroTag: 'blue-test-tag')));
       await tester.pump();
       expect(find.byType(Hero), findsOneWidget);
     });

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../core/extensions/nort_theme_context_x.dart';
 
 class BlueGlow extends StatefulWidget {
-  const BlueGlow({super.key, required this.size, this.child, this.animate = true});
+  const BlueGlow(
+      {super.key, required this.size, this.child, this.animate = true});
 
   final double size;
   final Widget? child;

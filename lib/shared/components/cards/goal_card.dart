@@ -81,7 +81,8 @@ class GoalCard extends StatelessWidget {
                 SizedBox(height: spacing.sm),
                 Row(
                   children: [
-                    Text(currentAmountLabel, style: context.numericStyles.small),
+                    Text(currentAmountLabel,
+                        style: context.numericStyles.small),
                     Text(
                       ' de $targetAmountLabel',
                       style: context.textStyles.bodyMedium,

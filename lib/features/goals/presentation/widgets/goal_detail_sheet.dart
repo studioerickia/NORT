@@ -37,7 +37,8 @@ class GoalDetailSheet extends ConsumerWidget {
             valueIsNumeric: true,
           ),
           if (goal.targetDate != null)
-            StatisticRow(label: 'Data alvo', value: formatMonthYear(goal.targetDate!)),
+            StatisticRow(
+                label: 'Data alvo', value: formatMonthYear(goal.targetDate!)),
           SizedBox(height: spacing.lg),
           SecondaryButton(
             label: 'Editar',
@@ -68,7 +69,8 @@ class GoalDetailSheet extends ConsumerWidget {
       context: context,
       builder: (_) => const ConfirmationDialog(
         title: 'Excluir meta?',
-        message: 'Ela fica guardada por 30 dias antes de ser removida de vez — dá pra restaurar até lá.',
+        message:
+            'Ela fica guardada por 30 dias antes de ser removida de vez — dá pra restaurar até lá.',
         confirmLabel: 'Excluir',
       ),
     );

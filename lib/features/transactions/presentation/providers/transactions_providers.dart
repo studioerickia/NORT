@@ -9,7 +9,8 @@ import '../../domain/repositories/transactions_repository.dart';
 
 final transactionsRepositoryProvider = Provider<TransactionsRepository>((ref) {
   final client = Supabase.instance.client;
-  return TransactionsRepositoryImpl(TransactionsRemoteDatasource(client), client);
+  return TransactionsRepositoryImpl(
+      TransactionsRemoteDatasource(client), client);
 });
 
 final transactionsStreamProvider = StreamProvider<List<Transaction>>((ref) {

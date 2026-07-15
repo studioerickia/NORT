@@ -26,7 +26,8 @@ class SuggestionChip extends StatelessWidget {
     return PressableScale(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
+        padding:
+            EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
         decoration: BoxDecoration(
           color: colors.surface,
           borderRadius: BorderRadius.circular(radii.pill),

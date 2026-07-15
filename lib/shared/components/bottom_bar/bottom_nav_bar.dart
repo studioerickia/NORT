@@ -52,7 +52,8 @@ class NortBottomNavBar extends StatelessWidget {
     final midpoint = items.length ~/ 2;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
+      padding:
+          EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
       decoration: BoxDecoration(
         color: colors.surface,
         boxShadow: shadows.low,

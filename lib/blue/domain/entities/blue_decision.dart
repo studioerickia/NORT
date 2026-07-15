@@ -38,7 +38,8 @@ class BlueDecision {
   final BlueMessage message;
   final Duration displayDuration;
 
-  bool get shouldDisplay => priority != BluePriority.none && message.shouldDisplay;
+  bool get shouldDisplay =>
+      priority != BluePriority.none && message.shouldDisplay;
 
   static BlueDecision silence({BlueTrigger trigger = BlueTrigger.none}) {
     return BlueDecision(

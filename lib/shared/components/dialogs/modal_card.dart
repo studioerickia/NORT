@@ -39,7 +39,8 @@ class ModalCard extends StatelessWidget {
     return Dialog(
       backgroundColor: colors.surfaceElevated,
       shape: RoundedRectangleBorder(borderRadius: radii.xlRadius),
-      insetPadding: EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.xxl),
+      insetPadding:
+          EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.xxl),
       child: Padding(
         padding: EdgeInsets.all(spacing.xl),
         child: Column(
@@ -52,7 +53,8 @@ class ModalCard extends StatelessWidget {
                   child: Text(title, style: context.textStyles.headlineSmall),
                 ),
                 if (onClose != null)
-                  NortIconButton(icon: Icons.close, onPressed: onClose, size: 32),
+                  NortIconButton(
+                      icon: Icons.close, onPressed: onClose, size: 32),
               ],
             ),
             SizedBox(height: spacing.md),

@@ -63,8 +63,10 @@ void main() {
   group('Cenário: saldo negativo (real, calculado das transações)', () {
     test('despesas maiores que receitas -> Insight de saldo negativo', () {
       final transactions = [
-        buildTransaction(amount: 500, type: TransactionType.income, occurredAt: now),
-        buildTransaction(amount: 1200, type: TransactionType.expense, occurredAt: now),
+        buildTransaction(
+            amount: 500, type: TransactionType.income, occurredAt: now),
+        buildTransaction(
+            amount: 1200, type: TransactionType.expense, occurredAt: now),
       ];
       final context = buildHomeBlueContext(
         now: now,
@@ -81,7 +83,9 @@ void main() {
 
   group('Cenário: meta perto de concluir', () {
     test('meta ativa com 90% de progresso -> Insight cita a meta', () {
-      final goals = [buildGoal(title: 'Viagem pro Japão', target: 10000, current: 9000)];
+      final goals = [
+        buildGoal(title: 'Viagem pro Japão', target: 10000, current: 9000)
+      ];
       final context = buildHomeBlueContext(
         now: now,
         balance: 100,
@@ -97,7 +101,11 @@ void main() {
 
     test('meta arquivada (sonho) não conta como ativa, não dispara', () {
       final goals = [
-        buildGoal(title: 'Sonho distante', target: 10000, current: 9500, status: GoalStatus.archived),
+        buildGoal(
+            title: 'Sonho distante',
+            target: 10000,
+            current: 9500,
+            status: GoalStatus.archived),
       ];
       final context = buildHomeBlueContext(
         now: now,
@@ -152,9 +160,12 @@ void main() {
       expect(context.manyExpensesThisMonth, isFalse);
     });
 
-    test('saldo positivo + muitas despesas -> manyExpensesThisMonth aparece de verdade como decisão', () {
+    test(
+        'saldo positivo + muitas despesas -> manyExpensesThisMonth aparece de verdade como decisão',
+        () {
       final transactions = [
-        buildTransaction(amount: 500, type: TransactionType.income, occurredAt: now),
+        buildTransaction(
+            amount: 500, type: TransactionType.income, occurredAt: now),
         ...List.generate(
           16,
           (i) => buildTransaction(
@@ -178,10 +189,15 @@ void main() {
   });
 
   group('Cenário: transações fora do período não contam pro resumo', () {
-    test('transação de 2 meses atrás não entra em transactionCountThisMonth', () {
+    test('transação de 2 meses atrás não entra em transactionCountThisMonth',
+        () {
       final transactions = [
-        buildTransaction(amount: 50, type: TransactionType.expense, occurredAt: DateTime(2025, 11, 1)),
-        buildTransaction(amount: 50, type: TransactionType.expense, occurredAt: now),
+        buildTransaction(
+            amount: 50,
+            type: TransactionType.expense,
+            occurredAt: DateTime(2025, 11, 1)),
+        buildTransaction(
+            amount: 50, type: TransactionType.expense, occurredAt: now),
       ];
       final context = buildHomeBlueContext(
         now: now,
@@ -195,7 +211,9 @@ void main() {
   });
 
   group('Cenário: dias desde a última transação', () {
-    test('última transação há 20 dias -> daysSinceLastTransaction calculado certo', () {
+    test(
+        'última transação há 20 dias -> daysSinceLastTransaction calculado certo',
+        () {
       final transactions = [
         buildTransaction(
           amount: 30,

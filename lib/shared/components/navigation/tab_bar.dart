@@ -42,7 +42,9 @@ class NortTabBar extends StatelessWidget {
                         ? context.textStyles.titleSmall
                         : context.textStyles.bodyMedium)!
                     .copyWith(
-                  color: i == selectedIndex ? colors.textPrimary : colors.textTertiary,
+                  color: i == selectedIndex
+                      ? colors.textPrimary
+                      : colors.textTertiary,
                 ),
                 child: Column(
                   children: [

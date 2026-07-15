@@ -34,7 +34,8 @@ class SecondaryButton extends StatelessWidget {
     final spacing = context.spacing;
     final radii = context.radii;
 
-    final borderColor = _enabled ? colors.border : colors.border.withOpacity(0.5);
+    final borderColor =
+        _enabled ? colors.border : colors.border.withOpacity(0.5);
     final textColor = _enabled ? colors.textPrimary : colors.textTertiary;
 
     return PressableScale(

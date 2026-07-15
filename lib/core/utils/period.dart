@@ -27,12 +27,16 @@ class PeriodSelection {
     switch (type) {
       case SummaryPeriod.today:
         final start = DateTime(reference.year, reference.month, reference.day);
-        return DateTimeRange(start: start, end: start.add(const Duration(days: 1)));
+        return DateTimeRange(
+            start: start, end: start.add(const Duration(days: 1)));
 
       case SummaryPeriod.thisWeek:
-        final startOfToday = DateTime(reference.year, reference.month, reference.day);
-        final start = startOfToday.subtract(Duration(days: reference.weekday - 1));
-        return DateTimeRange(start: start, end: start.add(const Duration(days: 7)));
+        final startOfToday =
+            DateTime(reference.year, reference.month, reference.day);
+        final start =
+            startOfToday.subtract(Duration(days: reference.weekday - 1));
+        return DateTimeRange(
+            start: start, end: start.add(const Duration(days: 7)));
 
       case SummaryPeriod.thisMonth:
         final start = DateTime(reference.year, reference.month, 1);

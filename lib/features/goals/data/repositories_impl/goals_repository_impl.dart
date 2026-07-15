@@ -101,7 +101,8 @@ class GoalsRepositoryImpl implements GoalsRepository {
         );
 
     final publicUrl = _client.storage.from('goal-images').getPublicUrl(path);
-    final bustedUrl = '$publicUrl?updated=${DateTime.now().millisecondsSinceEpoch}';
+    final bustedUrl =
+        '$publicUrl?updated=${DateTime.now().millisecondsSinceEpoch}';
 
     await _datasource.updateGoal(goalId, {'image_url': bustedUrl});
     return bustedUrl;

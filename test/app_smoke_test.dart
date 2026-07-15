@@ -1,4 +1,5 @@
-@Skip('Pré-Sprint 1 — não configura sharedPreferencesProvider nem sessão Supabase. Precisa de infraestrutura de mock antes de reativar.')
+@Skip(
+    'Pré-Sprint 1 — não configura sharedPreferencesProvider nem sessão Supabase. Precisa de infraestrutura de mock antes de reativar.')
 library;
 
 import 'package:flutter/material.dart';

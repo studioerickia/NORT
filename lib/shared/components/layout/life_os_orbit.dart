@@ -42,7 +42,8 @@ class LifeOSOrbit extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           Center(
-            child: SizedBox(width: centerSize, height: centerSize, child: center),
+            child:
+                SizedBox(width: centerSize, height: centerSize, child: center),
           ),
           for (int i = 0; i < areas.length; i++)
             _positioned(

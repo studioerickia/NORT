@@ -23,7 +23,8 @@ class TransactionFormSheet extends ConsumerStatefulWidget {
   bool get isEditing => existingTransaction != null;
 
   @override
-  ConsumerState<TransactionFormSheet> createState() => _TransactionFormSheetState();
+  ConsumerState<TransactionFormSheet> createState() =>
+      _TransactionFormSheetState();
 }
 
 class _TransactionFormSheetState extends ConsumerState<TransactionFormSheet> {
@@ -70,7 +71,8 @@ class _TransactionFormSheetState extends ConsumerState<TransactionFormSheet> {
     if (time == null) return;
 
     setState(() {
-      _occurredAt = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+      _occurredAt =
+          DateTime(date.year, date.month, date.day, time.hour, time.minute);
     });
   }
 
@@ -160,7 +162,7 @@ class _TransactionFormSheetState extends ConsumerState<TransactionFormSheet> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-           Row(
+            Row(
               children: [
                 Expanded(
                   child: _TypeToggle(
@@ -202,7 +204,9 @@ class _TransactionFormSheetState extends ConsumerState<TransactionFormSheet> {
               error: (_, __) => const SizedBox.shrink(),
               data: (categories) {
                 final filtered = categories
-                    .where((c) => c.type == CategoryType.both || c.type.name == _type.name)
+                    .where((c) =>
+                        c.type == CategoryType.both ||
+                        c.type.name == _type.name)
                     .toList();
                 _category ??= filtered.isNotEmpty ? filtered.first : null;
                 return Dropdown<Category>(
@@ -221,14 +225,16 @@ class _TransactionFormSheetState extends ConsumerState<TransactionFormSheet> {
               onTap: _saving ? null : _pickDateTime,
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.md),
+                padding: EdgeInsets.symmetric(
+                    horizontal: spacing.md, vertical: spacing.md),
                 decoration: BoxDecoration(
                   color: colors.surface,
                   borderRadius: radii.smRadius,
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.schedule_outlined, size: 18, color: colors.textSecondary),
+                    Icon(Icons.schedule_outlined,
+                        size: 18, color: colors.textSecondary),
                     SizedBox(width: spacing.sm),
                     Text(
                       _formatDateTime(_occurredAt),
@@ -242,7 +248,8 @@ class _TransactionFormSheetState extends ConsumerState<TransactionFormSheet> {
               SizedBox(height: spacing.sm),
               Text(
                 _error!,
-                style: context.textStyles.bodySmall?.copyWith(color: colors.danger),
+                style: context.textStyles.bodySmall
+                    ?.copyWith(color: colors.danger),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -277,7 +284,8 @@ class _TransactionFormSheetState extends ConsumerState<TransactionFormSheet> {
 }
 
 class _TypeToggle extends StatelessWidget {
-  const _TypeToggle({required this.label, required this.selected, required this.onTap});
+  const _TypeToggle(
+      {required this.label, required this.selected, required this.onTap});
 
   final String label;
   final bool selected;

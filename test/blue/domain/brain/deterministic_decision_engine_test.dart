@@ -66,7 +66,8 @@ void main() {
 
   group('Prioridade alta', () {
     test('meta concluída -> celebração, cita o nome', () {
-      final decision = engine.decide(_baseContext(goalJustCompletedTitle: 'Viagem pro Japão'));
+      final decision = engine
+          .decide(_baseContext(goalJustCompletedTitle: 'Viagem pro Japão'));
       expect(decision.trigger, BlueTrigger.goalCompleted);
       expect(decision.priority, BluePriority.high);
       expect(decision.type, BlueDecisionType.goal);
@@ -83,7 +84,9 @@ void main() {
       expect(decision.message.tone, BlueTone.reassuring);
     });
 
-    test('meta concluída tem prioridade sobre saldo negativo (ordem de avaliação)', () {
+    test(
+        'meta concluída tem prioridade sobre saldo negativo (ordem de avaliação)',
+        () {
       final decision = engine.decide(_baseContext(
         balance: -500,
         goalJustCompletedTitle: 'Reserva de emergência',
@@ -118,7 +121,9 @@ void main() {
       expect(decision.trigger, isNot(BlueTrigger.goalNearCompletion));
     });
 
-    test('meta com progresso 100% não dispara "quase concluída" (é goalCompleted, outro sinal)', () {
+    test(
+        'meta com progresso 100% não dispara "quase concluída" (é goalCompleted, outro sinal)',
+        () {
       final decision = engine.decide(_baseContext(
         mostRecentActiveGoal: const BlueGoalSnapshot(
           title: 'Carro novo',
@@ -130,7 +135,8 @@ void main() {
     });
 
     test('onboarding recém concluído', () {
-      final decision = engine.decide(_baseContext(onboardingJustCompleted: true));
+      final decision =
+          engine.decide(_baseContext(onboardingJustCompleted: true));
       expect(decision.trigger, BlueTrigger.onboardingJustCompleted);
       expect(decision.priority, BluePriority.medium);
       expect(decision.type, BlueDecisionType.onboarding);
@@ -152,8 +158,11 @@ void main() {
       expect(decision.message.tone, BlueTone.celebratory);
     });
 
-    test('mudança significativa de comportamento -> tom curioso, nunca julgador', () {
-      final decision = engine.decide(_baseContext(significantBehaviorChangeDetected: true));
+    test(
+        'mudança significativa de comportamento -> tom curioso, nunca julgador',
+        () {
+      final decision =
+          engine.decide(_baseContext(significantBehaviorChangeDetected: true));
       expect(decision.trigger, BlueTrigger.significantBehaviorChange);
       expect(decision.message.tone, BlueTone.curious);
     });
@@ -173,7 +182,8 @@ void main() {
 
   group('Prioridade baixa', () {
     test('meta criada -> cita o nome, tom curioso', () {
-      final decision = engine.decide(_baseContext(goalJustCreatedTitle: 'Casa própria'));
+      final decision =
+          engine.decide(_baseContext(goalJustCreatedTitle: 'Casa própria'));
       expect(decision.trigger, BlueTrigger.goalCreated);
       expect(decision.priority, BluePriority.low);
       expect(decision.message.text, contains('Casa própria'));
@@ -195,12 +205,14 @@ void main() {
     });
 
     test('14 dias sem transação -> dispara', () {
-      final decision = engine.decide(_baseContext(daysSinceLastTransaction: 14));
+      final decision =
+          engine.decide(_baseContext(daysSinceLastTransaction: 14));
       expect(decision.trigger, BlueTrigger.noTransactionsInDays);
     });
 
     test('13 dias sem transação -> não dispara ainda', () {
-      final decision = engine.decide(_baseContext(daysSinceLastTransaction: 13));
+      final decision =
+          engine.decide(_baseContext(daysSinceLastTransaction: 13));
       expect(decision.trigger, isNot(BlueTrigger.noTransactionsInDays));
     });
   });
@@ -222,7 +234,9 @@ void main() {
       expect(decision.trigger, BlueTrigger.firstMonthOfUse);
     });
 
-    test('dentro da mesma prioridade, a ordem de avaliação decide (goalNearCompletion antes de onboarding)', () {
+    test(
+        'dentro da mesma prioridade, a ordem de avaliação decide (goalNearCompletion antes de onboarding)',
+        () {
       final decision = engine.decide(_baseContext(
         mostRecentActiveGoal: const BlueGoalSnapshot(
           title: 'Meta X',
@@ -242,7 +256,8 @@ void main() {
     });
 
     test('média prioridade -> 5 segundos', () {
-      final decision = engine.decide(_baseContext(onboardingJustCompleted: true));
+      final decision =
+          engine.decide(_baseContext(onboardingJustCompleted: true));
       expect(decision.displayDuration, const Duration(seconds: 5));
     });
 
@@ -285,12 +300,14 @@ void main() {
       'goalCompleted': _baseContext(goalJustCompletedTitle: 'Teste'),
       'negativeBalance': _baseContext(balance: -500),
       'goalNearCompletion': _baseContext(
-        mostRecentActiveGoal: const BlueGoalSnapshot(title: 'Teste', progress: 0.9, remainingAmount: 50),
+        mostRecentActiveGoal: const BlueGoalSnapshot(
+            title: 'Teste', progress: 0.9, remainingAmount: 50),
       ),
       'onboardingJustCompleted': _baseContext(onboardingJustCompleted: true),
       'returnedAfterAbsence': _baseContext(daysSinceLastLogin: 10),
       'firstMonthOfUse': _baseContext(isFirstMonthOfUse: true),
-      'significantBehaviorChange': _baseContext(significantBehaviorChangeDetected: true),
+      'significantBehaviorChange':
+          _baseContext(significantBehaviorChangeDetected: true),
       'manyExpensesThisMonth': _baseContext(manyExpensesThisMonth: true),
       'firstIncome': _baseContext(isFirstIncomeEver: true),
       'goalCreated': _baseContext(goalJustCreatedTitle: 'Teste'),
@@ -308,7 +325,8 @@ void main() {
           expect(
             lowerText.contains(banned.toLowerCase()),
             isFalse,
-            reason: '"$label" contém a expressão banida "$banned": "${decision.message.text}"',
+            reason:
+                '"$label" contém a expressão banida "$banned": "${decision.message.text}"',
           );
         }
       });
