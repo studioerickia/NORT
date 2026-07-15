@@ -25,7 +25,7 @@ BlueContext buildHomeBlueContext({
               .toDouble(),
         );
 
-  final periodTransactions = transactions.where((t) => period.contains(t.occurredAt)).toList();
+  final periodTransactions = transactions.where((t) => period.contains(t.occurredAt, now: now)).toList();
   final periodExpenseCount =
       periodTransactions.where((t) => t.type == TransactionType.expense).length;
 
