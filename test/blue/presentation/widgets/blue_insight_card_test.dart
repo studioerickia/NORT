@@ -13,7 +13,8 @@ Widget _wrap(Widget child) {
   );
 }
 
-BlueDecision _realDecision({BlueTone tone = BlueTone.reassuring, BlueMood mood = BlueMood.idle}) {
+BlueDecision _realDecision(
+    {BlueTone tone = BlueTone.reassuring, BlueMood mood = BlueMood.idle}) {
   return BlueDecision(
     trigger: BlueTrigger.negativeBalance,
     type: BlueDecisionType.financial,
@@ -31,14 +32,16 @@ BlueDecision _realDecision({BlueTone tone = BlueTone.reassuring, BlueMood mood =
 void main() {
   group('BlueInsightCard — decisão real', () {
     testWidgets('renderiza o texto da decisão', (tester) async {
-      await tester.pumpWidget(_wrap(BlueInsightCard(decision: _realDecision())));
+      await tester
+          .pumpWidget(_wrap(BlueInsightCard(decision: _realDecision())));
       await tester.pump();
       expect(find.text('Mensagem de teste da Blue.'), findsOneWidget);
     });
 
     testWidgets('mostra a Blue com o estado sugerido', (tester) async {
       await tester.pumpWidget(
-        _wrap(BlueInsightCard(decision: _realDecision(mood: BlueMood.celebrating))),
+        _wrap(BlueInsightCard(
+            decision: _realDecision(mood: BlueMood.celebrating))),
       );
       await tester.pump();
       expect(find.byType(BlueAvatar), findsOneWidget);
@@ -46,8 +49,10 @@ void main() {
   });
 
   group('BlueInsightCard — silêncio', () {
-    testWidgets('não renderiza nada quando shouldDisplay é false', (tester) async {
-      await tester.pumpWidget(_wrap(BlueInsightCard(decision: BlueDecision.silence())));
+    testWidgets('não renderiza nada quando shouldDisplay é false',
+        (tester) async {
+      await tester
+          .pumpWidget(_wrap(BlueInsightCard(decision: BlueDecision.silence())));
       await tester.pump();
       expect(find.byType(Container), findsNothing);
       expect(find.byType(BlueAvatar), findsNothing);
